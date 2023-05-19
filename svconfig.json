@@ -1,0 +1,8 @@
+{
+  "rootDir": "src",
+  "libDir": "lib",
+  "componentssDir": "components",
+  "servicessDir": "services",
+  "statesDir": "state",
+  "structure": "FEATURE"
+}
