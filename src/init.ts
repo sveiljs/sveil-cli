@@ -3,8 +3,7 @@ import { input } from "@inquirer/prompts";
 import chalk from "chalk";
 import select from "@inquirer/select";
 import { Structure } from "./model";
-import { writeFile } from "fs";
-import { getActionError } from "./utils";
+import { generateFile, getActionError } from "./utils";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
@@ -73,11 +72,7 @@ export default async function initCommand(this: any) {
   };
 
   if (!options.dry) {
-    writeFile("./sveil-cli.json", JSON.stringify(config, null, 2), (err) => {
-      if (err) {
-        console.error(err);
-      }
-    });
+    generateFile("./sveil-cli.json", config);
   }
 
   console.log(

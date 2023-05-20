@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { fork } from "child_process";
+import { writeFile } from "fs";
 import { readdir } from "fs/promises";
 
 export const runScript = async (
@@ -41,4 +42,15 @@ export const getActionError = async () => {
     ? "No svelte.config.js detected. Are you sure svelte was init?"
     : "";
   return noPackage || noSvelte;
+};
+
+export const generateFile = async (fileName: string, content: any) => {
+  console.log(content);
+  const fileContent =
+    typeof content === "string" ? content : JSON.stringify(content, null, 2);
+  writeFile(fileName, fileContent, (err) => {
+    if (err) {
+      console.error(`File generate error: ${err}`);
+    }
+  });
 };

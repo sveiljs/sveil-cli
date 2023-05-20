@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import initCommand from "./init";
+import { generateComponent } from "./g-component";
 
 console.log(Math.random());
 
@@ -22,8 +23,7 @@ generate
   .command("component")
   .alias("c")
   .argument("<componentName>")
-  .action((a) => {
-    console.log("args - ", a);
-  });
+  .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
+  .action(generateComponent);
 
 app.parse(process.argv);
