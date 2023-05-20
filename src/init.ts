@@ -28,7 +28,7 @@ export default async function initCommand() {
     default: "src",
   });
   const libDir = await input({
-    message: "Default lib directory",
+    message: "Default library directory",
     default: "lib",
   });
   const componentssDir = await input({
