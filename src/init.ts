@@ -6,6 +6,23 @@ import { Structure } from "./model";
 import { writeFile } from "fs";
 
 export default async function initCommand() {
+  const structure = await select({
+    message: "Select a package manager",
+    choices: [
+      {
+        name: Structure.DOMAIN,
+        value: Structure.DOMAIN,
+        description:
+          "Application structure: domain based. All component based files in lib folder with separate folders",
+      },
+      {
+        name: Structure.FEATURE,
+        value: Structure.FEATURE,
+        description:
+          "Application structure: feature based. All component based files in component folder with separate folders",
+      },
+    ],
+  });
   const rootDir = await input({
     message: "Default main directory",
     default: "src",
@@ -30,32 +47,20 @@ export default async function initCommand() {
     message: "Default state directory",
     default: "state",
   });
-  const structure = await select({
-    message: "Select a package manager",
-    choices: [
-      {
-        name: Structure.DOMAIN,
-        value: Structure.DOMAIN,
-        description:
-          "Application structure domain based, all component based files in lib folder separate folders",
-      },
-      {
-        name: Structure.FEATURE,
-        value: Structure.FEATURE,
-        description:
-          "Application structure feature based, all component based files in component folder",
-      },
-    ],
+  const sharedDir = await input({
+    message: "Default shared directory",
+    default: "shared",
   });
 
   const config = {
+    structure,
     rootDir,
     libDir,
     componentssDir,
     servicessDir,
     reactiveServicessDir,
     statesDir,
-    structure,
+    sharedDir,
   };
 
   writeFile("./sveil-cli.json", JSON.stringify(config, null, 2), (err) => {
