@@ -10,6 +10,7 @@ app
   .command("init")
   .alias("i")
   .description("Init sveil and create sveil config")
+  .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
   .action(initCommand);
 
 const generate = app

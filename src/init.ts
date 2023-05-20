@@ -5,7 +5,9 @@ import select from "@inquirer/select";
 import { Structure } from "./model";
 import { writeFile } from "fs";
 
-export default async function initCommand() {
+export default async function initCommand(this: any) {
+  const options = this.opts();
+
   const structure = await select({
     message: "Select a package manager",
     choices: [
@@ -63,21 +65,25 @@ export default async function initCommand() {
     sharedDir,
   };
 
-  writeFile("./sveil-cli.json", JSON.stringify(config, null, 2), (err) => {
-    if (err) {
-      console.error(err);
-    }
-  });
+  if (!options.dry) {
+    writeFile("./sveil-cli.json", JSON.stringify(config, null, 2), (err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
+  }
 
   console.log(
     chalk.blue(`
-      rootDir: ${rootDir},
-      libDir: ${libDir},
-      componentssDir: ${componentssDir},
-      servicessDir: ${servicessDir},
-      reactiveServicessDir: ${reactiveServicessDir},
-      statesDir: ${statesDir},
-      structure: ${structure}
+      sveil-cli.json created with:
+        rootDir: ${rootDir},
+        libDir: ${libDir},
+        componentssDir: ${componentssDir},
+        servicessDir: ${servicessDir},
+        reactiveServicessDir: ${reactiveServicessDir},
+        statesDir: ${statesDir},
+        structure: ${structure}
+      In ${process.cwd()}  
     `)
   );
 }
