@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { fork } from "child_process";
+import { readdir } from "fs/promises";
 
 export const runScript = async (
   scriptPath: string,
@@ -30,3 +31,14 @@ export const runScript = async (
 //   if (err) throw err;
 //   console.log("finished running some-script.js ");
 // });
+
+export const getActionError = async () => {
+  const files = await readdir(process.cwd());
+  const noPackage = !files.includes("package.json")
+    ? "No package.json detected. Are you sure npm was init?"
+    : "";
+  const noSvelte = !files.includes("svelte.config.js")
+    ? "No svelte.config.js detected. Are you sure svelte was init?"
+    : "";
+  return noPackage || noSvelte;
+};

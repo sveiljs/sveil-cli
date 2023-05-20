@@ -4,9 +4,16 @@ import chalk from "chalk";
 import select from "@inquirer/select";
 import { Structure } from "./model";
 import { writeFile } from "fs";
+import { getActionError } from "./utils";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
+  let err = await getActionError();
+
+  if (err) {
+    console.log(chalk.red(err));
+    return;
+  }
 
   const structure = await select({
     message: "Select a package manager",
@@ -75,15 +82,15 @@ export default async function initCommand(this: any) {
 
   console.log(
     chalk.blue(`
-      sveil-cli.json created with:
-        rootDir: ${rootDir},
-        libDir: ${libDir},
-        componentssDir: ${componentssDir},
-        servicessDir: ${servicessDir},
-        reactiveServicessDir: ${reactiveServicessDir},
-        statesDir: ${statesDir},
-        structure: ${structure}
-      In ${process.cwd()}  
-    `)
+        sveil-cli.json created with:
+          rootDir: ${rootDir},
+          libDir: ${libDir},
+          componentssDir: ${componentssDir},
+          servicessDir: ${servicessDir},
+          reactiveServicessDir: ${reactiveServicessDir},
+          statesDir: ${statesDir},
+          structure: ${structure}
+        In ${process.cwd()}  
+      `)
   );
 }
