@@ -4,6 +4,7 @@ import { fork } from "child_process";
 import { writeFile } from "fs";
 import { mkdir, readFile, readdir } from "fs/promises";
 import { Config, Structure } from "./model";
+import { normalize } from "path";
 
 export const runScript = async (
   scriptPath: string,
@@ -46,10 +47,10 @@ export const getActionError = async () => {
   return noPackage || noSvelte;
 };
 
-export const generateFile = async (fileName: string, content: any) => {
+export const generateFile = async (filePath: string, content: any) => {
   const fileContent =
     typeof content === "string" ? content : JSON.stringify(content, null, 2);
-  writeFile(fileName, fileContent, (err) => {
+  writeFile(normalize(filePath), fileContent, (err) => {
     if (err) {
       console.error(chalk.red(`File generate error: ${err}`));
     }
@@ -62,14 +63,18 @@ export const generateInitFolders = async () => {
     for (const key in config) {
       if (Object.prototype.hasOwnProperty.call(config, key)) {
         const dir = config[key];
-        await mkdir(`./${rootDir}/${libDir}/${dir}`, { recursive: true });
+        await mkdir(normalize(`./${rootDir}/${libDir}/${dir}`), {
+          recursive: true,
+        });
       }
     }
   } else {
     const { sharedDir, statesDir, featuresDir } = config;
-    await mkdir(`./${rootDir}/${libDir}/${statesDir}`, { recursive: true });
-    await mkdir(`./${rootDir}/${libDir}/${sharedDir}`, { recursive: true });
-    await mkdir(`./${rootDir}/${libDir}/${featuresDir}`, { recursive: true });
+    [statesDir, sharedDir, featuresDir].forEach(async (dir) => {
+      await mkdir(normalize(`./${rootDir}/${libDir}/${dir}`), {
+        recursive: true,
+      });
+    });
   }
 };
 
@@ -78,4 +83,16 @@ export const getConfig = async () => {
     encoding: "utf8",
   });
   return JSON.parse(json) as Config;
+};
+
+export const getComponentPath = async (fileName: string) => {
+  const { structure, rootDir, libDir, componentssDir, featuresDir } =
+    await getConfig();
+
+  if (structure === Structure.DOMAIN) {
+    return normalize(`${process.cwd()}/${rootDir}/${libDir}/${componentssDir}`);
+  }
+  return normalize(
+    `${process.cwd()}/${rootDir}/${libDir}/${featuresDir}/${fileName}/${componentssDir}`
+  );
 };
