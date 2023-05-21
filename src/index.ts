@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command } from "commander";
 import initCommand from "./init";
-import { generateComponent } from "./g-component";
+import { generateComponent } from "./generate-component";
 
 console.log(Math.random());
 
