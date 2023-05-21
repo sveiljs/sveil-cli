@@ -1,7 +1,9 @@
 #!/usr/bin/env node
+import chalk from "chalk";
 import { fork } from "child_process";
 import { writeFile } from "fs";
-import { readdir } from "fs/promises";
+import { mkdir, readFile, readdir } from "fs/promises";
+import { Config, Structure } from "./model";
 
 export const runScript = async (
   scriptPath: string,
@@ -45,12 +47,35 @@ export const getActionError = async () => {
 };
 
 export const generateFile = async (fileName: string, content: any) => {
-  console.log(content);
   const fileContent =
     typeof content === "string" ? content : JSON.stringify(content, null, 2);
   writeFile(fileName, fileContent, (err) => {
     if (err) {
-      console.error(`File generate error: ${err}`);
+      console.error(chalk.red(`File generate error: ${err}`));
     }
   });
+};
+
+export const generateInitFolders = async () => {
+  const { structure, libDir, rootDir, ...config } = await getConfig();
+  if (structure === Structure.DOMAIN) {
+    for (const key in config) {
+      if (Object.prototype.hasOwnProperty.call(config, key)) {
+        const dir = config[key];
+        await mkdir(`./${rootDir}/${libDir}/${dir}`, { recursive: true });
+      }
+    }
+  } else {
+    const { sharedDir, statesDir, featuresDir } = config;
+    await mkdir(`./${rootDir}/${libDir}/${statesDir}`, { recursive: true });
+    await mkdir(`./${rootDir}/${libDir}/${sharedDir}`, { recursive: true });
+    await mkdir(`./${rootDir}/${libDir}/${featuresDir}`, { recursive: true });
+  }
+};
+
+export const getConfig = async () => {
+  const json = await readFile(process.cwd() + "/sveil-cli.json", {
+    encoding: "utf8",
+  });
+  return JSON.parse(json) as Config;
 };

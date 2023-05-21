@@ -2,8 +2,8 @@
 import { input } from "@inquirer/prompts";
 import chalk from "chalk";
 import select from "@inquirer/select";
-import { Structure } from "./model";
-import { generateFile, getActionError } from "./utils";
+import { Config, Structure } from "./model";
+import { generateFile, generateInitFolders, getActionError } from "./utils";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
@@ -60,7 +60,16 @@ export default async function initCommand(this: any) {
     default: "shared",
   });
 
-  const config = {
+  let featuresDir = "";
+
+  if (structure === Structure.FEATURE) {
+    featuresDir = await input({
+      message: "Default features directory",
+      default: "features",
+    });
+  }
+
+  const config: Config = {
     structure,
     rootDir,
     libDir,
@@ -69,10 +78,12 @@ export default async function initCommand(this: any) {
     reactiveServicessDir,
     statesDir,
     sharedDir,
+    featuresDir,
   };
 
   if (!options.dry) {
-    generateFile("./sveil-cli.json", config);
+    await generateFile("./sveil-cli.json", config);
+    await generateInitFolders();
   }
 
   console.log(
