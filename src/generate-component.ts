@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import { getComponentSchema } from "./schemas/generate";
+import { getComponentSchema } from "./schemas/component";
 import { generateFile, getComponentPath, getConfig } from "./utils";
 import { Structure } from "./model";
 import { mkdir } from "fs/promises";
@@ -13,23 +13,20 @@ export const generateComponent = async (fileName: string, options: any) => {
     const componentBody = prettier.format(await getComponentSchema(fileName), {
       parser: "svelte",
     });
-    let componentPath = await getComponentPath(fileName);
-    const showPath = normalize(`${componentPath}/${fileName}.svelte`);
+    const folderPath = await getComponentPath(fileName);
+    const fullPath = normalize(`${folderPath}/${fileName}.svelte`);
 
     if (!options.dry) {
       if (structure === Structure.DOMAIN) {
-        await generateFile(showPath, componentBody);
+        await generateFile(fullPath, componentBody);
       } else {
-        await mkdir(componentPath, { recursive: true });
-        await generateFile(
-          normalize(`${componentPath}/${fileName}.svelte`),
-          componentBody
-        );
+        await mkdir(folderPath, { recursive: true });
+        await generateFile(fullPath, componentBody);
       }
     }
     console.log(
       chalk.blue(`
-    svelte component ${fileName}.svelte generated in ${showPath}
+    svelte component ${fileName}.svelte generated in ${fullPath}
   `)
     );
   } catch (error) {
