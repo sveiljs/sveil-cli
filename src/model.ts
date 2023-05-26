@@ -4,6 +4,15 @@ export enum Structure {
   FEATURE = "FEATURE",
 }
 
+export enum ScriptLangs {
+  TS = "ts",
+}
+
+export enum CssLangs {
+  SCSS = "scss",
+  POSTCSS = "postcss",
+}
+
 export interface Config {
   structure: string;
   rootDir: string;
@@ -14,4 +23,12 @@ export interface Config {
   statesDir: string;
   sharedDir: string;
   featuresDir?: string;
+  defaultScriptLang: ScriptLangs;
+  defaultCssLang: CssLangs;
+}
+
+export interface ComponentSchemaOptions {
+  scriptLang?: ScriptLangs;
+  externalCss?: boolean;
+  CssLang?: CssLangs;
 }
