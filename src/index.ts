@@ -20,15 +20,15 @@ app
     ).choices(Object.values(Structure))
   )
   .addOption(
-    new Option("-r, --root-dir <dir>", "Set root directory of project")
+    new Option("-rd, --root-dir <dir>", "Set root directory of project")
   )
-  .addOption(new Option("-l, --lib-dir <dir>", "Set lib directory of project"))
+  .addOption(new Option("-ld, --lib-dir <dir>", "Set lib directory of project"))
   .addOption(
-    new Option("-f, --features-dir <dir>", "Set features directory of project")
+    new Option("-fd, --features-dir <dir>", "Set features directory of project")
   )
   .addOption(
     new Option(
-      "-c, --components-dir <dir>",
+      "-cd, --components-dir <dir>",
       "Set components directory of project"
     )
   )
