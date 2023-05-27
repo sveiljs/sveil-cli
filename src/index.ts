@@ -22,6 +22,7 @@ app
   .addOption(
     new Option("-r, --root-dir <dir>", "Set root directory of project")
   )
+  .addOption(new Option("-l, --lib-dir <dir>", "Set lib directory of project"))
   .action(initCommand);
 
 const generate = app

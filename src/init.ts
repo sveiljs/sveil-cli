@@ -44,10 +44,12 @@ export default async function initCommand(this: any) {
       message: "Default main directory",
       default: "src",
     }));
-  const libDir = await input({
-    message: "Default library directory",
-    default: "lib",
-  });
+  const libDir =
+    options.libDir ||
+    (await input({
+      message: "Default library directory",
+      default: "lib",
+    }));
 
   if (structure === Structure.FEATURE) {
     featuresDir = await input({
