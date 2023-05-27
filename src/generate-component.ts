@@ -9,10 +9,13 @@ const prettier = require("prettier");
 
 export const generateComponent = async (fileName: string, options: any) => {
   try {
-    const { structure } = await getConfig();
-    const componentBody = prettier.format(await getComponentSchema(fileName), {
-      parser: "svelte",
-    });
+    const { structure, defaultScriptLang: scriptLang } = await getConfig();
+    const componentBody = prettier.format(
+      await getComponentSchema(fileName, { scriptLang }),
+      {
+        parser: "svelte",
+      }
+    );
     const folderPath = await getComponentPath(fileName);
     const fullPath = normalize(`${folderPath}/${fileName}.svelte`);
 
