@@ -38,10 +38,12 @@ export default async function initCommand(this: any) {
         },
       ],
     }));
-  const rootDir = await input({
-    message: "Default main directory",
-    default: "src",
-  });
+  const rootDir =
+    options.rootDir ||
+    (await input({
+      message: "Default main directory",
+      default: "src",
+    }));
   const libDir = await input({
     message: "Default library directory",
     default: "lib",

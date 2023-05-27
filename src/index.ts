@@ -19,6 +19,9 @@ app
       "Set structure of project"
     ).choices(Object.values(Structure))
   )
+  .addOption(
+    new Option("-r, --root-dir <dir>", "Set root directory of project")
+  )
   .action(initCommand);
 
 const generate = app
