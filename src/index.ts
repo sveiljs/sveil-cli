@@ -47,6 +47,9 @@ app
   .addOption(
     new Option("-std, --state-dir <dir>", "Set state directory of project")
   )
+  .addOption(
+    new Option("-sd, --shared-dir <dir>", "Set shared directory of project")
+  )
   .action(initCommand);
 
 const generate = app

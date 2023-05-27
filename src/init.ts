@@ -90,10 +90,12 @@ export default async function initCommand(this: any) {
       default: "state",
     }));
 
-  const sharedDir = await input({
-    message: "Default shared directory",
-    default: "shared",
-  });
+  const sharedDir =
+    options.sharedDir ||
+    (await input({
+      message: "Default shared directory",
+      default: "shared",
+    }));
 
   if (tsDetected) {
     scriptLang = (await confirm({
