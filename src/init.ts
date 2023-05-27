@@ -60,10 +60,12 @@ export default async function initCommand(this: any) {
       }));
   }
 
-  const componentssDir = await input({
-    message: "Default components directory",
-    default: "components",
-  });
+  const componentssDir =
+    options.componentsDir ||
+    (await input({
+      message: "Default components directory",
+      default: "components",
+    }));
   const servicessDir = await input({
     message: "Default services directory",
     default: "services",

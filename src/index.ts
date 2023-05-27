@@ -26,6 +26,12 @@ app
   .addOption(
     new Option("-f, --features-dir <dir>", "Set features directory of project")
   )
+  .addOption(
+    new Option(
+      "-c, --components-dir <dir>",
+      "Set components directory of project"
+    )
+  )
   .action(initCommand);
 
 const generate = app
