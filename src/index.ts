@@ -23,6 +23,9 @@ app
     new Option("-r, --root-dir <dir>", "Set root directory of project")
   )
   .addOption(new Option("-l, --lib-dir <dir>", "Set lib directory of project"))
+  .addOption(
+    new Option("-f, --features-dir <dir>", "Set features directory of project")
+  )
   .action(initCommand);
 
 const generate = app

@@ -52,10 +52,12 @@ export default async function initCommand(this: any) {
     }));
 
   if (structure === Structure.FEATURE) {
-    featuresDir = await input({
-      message: "Default features directory",
-      default: "features",
-    });
+    featuresDir =
+      options.featuresDir ||
+      (await input({
+        message: "Default features directory",
+        default: "features",
+      }));
   }
 
   const componentssDir = await input({
