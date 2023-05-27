@@ -33,13 +33,13 @@ app
     )
   )
   .addOption(
-    new Option("-std, --state-dir <dir>", "Set state directory of project")
-  )
-  .addOption(
     new Option(
       "-srd, --services-dir <dir>",
       "Set services directory of project"
     )
+  )
+  .addOption(
+    new Option("-std, --state-dir <dir>", "Set state directory of project")
   )
   .action(initCommand);
 
