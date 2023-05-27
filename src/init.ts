@@ -38,12 +38,14 @@ export default async function initCommand(this: any) {
         },
       ],
     }));
+
   const rootDir =
     options.rootDir ||
     (await input({
       message: "Default main directory",
       default: "src",
     }));
+
   const libDir =
     options.libDir ||
     (await input({
@@ -66,18 +68,22 @@ export default async function initCommand(this: any) {
       message: "Default components directory",
       default: "components",
     }));
+
   const servicessDir = await input({
     message: "Default services directory",
     default: "services",
   });
+
   const reactiveServicessDir = await input({
     message: "Default reactive services directory",
     default: "$services",
   });
+
   const statesDir = await input({
     message: "Default state directory",
     default: "state",
   });
+
   const sharedDir = await input({
     message: "Default shared directory",
     default: "shared",
