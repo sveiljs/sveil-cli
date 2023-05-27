@@ -76,10 +76,12 @@ export default async function initCommand(this: any) {
       default: "services",
     }));
 
-  const reactiveServicesDir = await input({
-    message: "Default reactive services directory",
-    default: "$services",
-  });
+  const reactiveServicesDir =
+    options.reactiveServicesDir ||
+    (await input({
+      message: "Default reactive services directory",
+      default: "$services",
+    }));
 
   const stateDir =
     options.stateDir ||
