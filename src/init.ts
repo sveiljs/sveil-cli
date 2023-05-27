@@ -10,6 +10,29 @@ export default async function initCommand(this: any) {
   const options = this.opts();
   const rootFiles = await readdir(process.cwd());
   const tsDetected = rootFiles.includes("tsconfig.json");
+
+  const getDirChoice = async (
+    option: string,
+    defaultValue: string,
+    msg: string
+  ) =>
+    options[option] ||
+    (options.skip && defaultValue) ||
+    (await input({
+      message: `Default ${msg} directory`,
+      default: defaultValue,
+    }));
+
+  const DEFAULT_STRUCTURE = Structure.DOMAIN;
+  const DEFAULT_ROOT_DIR = "src";
+  const DEFAULT_LIB_DIR = "lib";
+  const DEFAULT_FEATURES_DIR = "features";
+  const DEFAULT_COMPONENTS_DIR = "components";
+  const DEFAULT_SERVICES_DIR = "services";
+  const DEFAULT_REACTIVE_SERVICES_DIR = "$services";
+  const DEFAULT_STATE_DIR = "state";
+  const DEFAULT_SHARED_DIR = "shared";
+
   let err = await getActionError();
   let featuresDir = "";
   let scriptLang = "";
@@ -21,6 +44,7 @@ export default async function initCommand(this: any) {
 
   const structure =
     options.structure ||
+    (options.skip && DEFAULT_STRUCTURE) ||
     (await select({
       message: "Select a package manager",
       choices: [
@@ -39,63 +63,43 @@ export default async function initCommand(this: any) {
       ],
     }));
 
-  const rootDir =
-    options.rootDir ||
-    (await input({
-      message: "Default main directory",
-      default: "src",
-    }));
+  const rootDir = await getDirChoice("rootDir", DEFAULT_ROOT_DIR, "root");
 
-  const libDir =
-    options.libDir ||
-    (await input({
-      message: "Default library directory",
-      default: "lib",
-    }));
+  const libDir = await getDirChoice("libDir", DEFAULT_LIB_DIR, "library");
 
   if (structure === Structure.FEATURE) {
-    featuresDir =
-      options.featuresDir ||
-      (await input({
-        message: "Default features directory",
-        default: "features",
-      }));
+    featuresDir = await getDirChoice(
+      "featuresDir",
+      DEFAULT_FEATURES_DIR,
+      "features"
+    );
   }
 
-  const componentsDir =
-    options.componentsDir ||
-    (await input({
-      message: "Default components directory",
-      default: "components",
-    }));
+  const componentsDir = await getDirChoice(
+    "componentsDir",
+    DEFAULT_COMPONENTS_DIR,
+    "components"
+  );
 
-  const servicesDir =
-    options.servicesDir ||
-    (await input({
-      message: "Default services directory",
-      default: "services",
-    }));
+  const servicesDir = await getDirChoice(
+    "servicesDir",
+    DEFAULT_SERVICES_DIR,
+    "services"
+  );
 
-  const reactiveServicesDir =
-    options.reactiveServicesDir ||
-    (await input({
-      message: "Default reactive services directory",
-      default: "$services",
-    }));
+  const reactiveServicesDir = await getDirChoice(
+    "reactiveServicesDir",
+    DEFAULT_REACTIVE_SERVICES_DIR,
+    "reactive services"
+  );
 
-  const stateDir =
-    options.stateDir ||
-    (await input({
-      message: "Default state directory",
-      default: "state",
-    }));
+  const stateDir = await getDirChoice("stateDir", DEFAULT_STATE_DIR, "state");
 
-  const sharedDir =
-    options.sharedDir ||
-    (await input({
-      message: "Default shared directory",
-      default: "shared",
-    }));
+  const sharedDir = await getDirChoice(
+    "sharedDir",
+    DEFAULT_SHARED_DIR,
+    "shared"
+  );
 
   if (tsDetected) {
     scriptLang = (await confirm({

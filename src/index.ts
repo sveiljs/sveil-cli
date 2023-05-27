@@ -13,6 +13,7 @@ app
   .alias("i")
   .description("Init sveil and create sveil config")
   .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
+  .option("-y, --skip", "Skip interactive tour and init with default values")
   .addOption(
     new Option(
       "-s, --structure <structure>",
