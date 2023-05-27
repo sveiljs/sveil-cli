@@ -81,10 +81,12 @@ export default async function initCommand(this: any) {
     default: "$services",
   });
 
-  const stateDir = await input({
-    message: "Default state directory",
-    default: "state",
-  });
+  const stateDir =
+    options.stateDir ||
+    (await input({
+      message: "Default state directory",
+      default: "state",
+    }));
 
   const sharedDir = await input({
     message: "Default shared directory",
