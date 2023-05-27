@@ -8,6 +8,7 @@ import { generateFile, generateInitFolders, getActionError } from "./utils";
 export default async function initCommand(this: any) {
   const options = this.opts();
   let err = await getActionError();
+  let featuresDir = "";
 
   if (err) {
     console.log(chalk.red(err));
@@ -31,6 +32,14 @@ export default async function initCommand(this: any) {
       },
     ],
   });
+
+  if (structure === Structure.FEATURE) {
+    featuresDir = await input({
+      message: "Default features directory",
+      default: "features",
+    });
+  }
+
   const rootDir = await input({
     message: "Default main directory",
     default: "src",
@@ -60,15 +69,6 @@ export default async function initCommand(this: any) {
     default: "shared",
   });
 
-  let featuresDir = "";
-
-  if (structure === Structure.FEATURE) {
-    featuresDir = await input({
-      message: "Default features directory",
-      default: "features",
-    });
-  }
-
   const config: Config = {
     structure,
     rootDir,
@@ -79,6 +79,8 @@ export default async function initCommand(this: any) {
     statesDir,
     sharedDir,
     featuresDir,
+    defaultCssLang: "",
+    defaultScriptLang: "",
   };
 
   if (!options.dry) {

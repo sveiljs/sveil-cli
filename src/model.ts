@@ -23,8 +23,8 @@ export interface Config {
   statesDir: string;
   sharedDir: string;
   featuresDir?: string;
-  defaultScriptLang: ScriptLangs;
-  defaultCssLang: CssLangs;
+  defaultScriptLang: ScriptLangs | "";
+  defaultCssLang: CssLangs | "";
 }
 
 export interface ComponentSchemaOptions {
