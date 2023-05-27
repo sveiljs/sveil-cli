@@ -1,14 +1,18 @@
 #!/usr/bin/env node
-import { input } from "@inquirer/prompts";
+import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
 import select from "@inquirer/select";
-import { Config, Structure } from "./model";
+import { Config, ScriptLangs, Structure } from "./model";
 import { generateFile, generateInitFolders, getActionError } from "./utils";
+import { readdir } from "fs/promises";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
+  const rootFiles = await readdir(process.cwd());
+  const tsDetected = rootFiles.includes("tsconfig.json");
   let err = await getActionError();
   let featuresDir = "";
+  let scriptLang = "";
 
   if (err) {
     console.log(chalk.red(err));
@@ -32,14 +36,6 @@ export default async function initCommand(this: any) {
       },
     ],
   });
-
-  if (structure === Structure.FEATURE) {
-    featuresDir = await input({
-      message: "Default features directory",
-      default: "features",
-    });
-  }
-
   const rootDir = await input({
     message: "Default main directory",
     default: "src",
@@ -48,6 +44,14 @@ export default async function initCommand(this: any) {
     message: "Default library directory",
     default: "lib",
   });
+
+  if (structure === Structure.FEATURE) {
+    featuresDir = await input({
+      message: "Default features directory",
+      default: "features",
+    });
+  }
+
   const componentssDir = await input({
     message: "Default components directory",
     default: "components",
@@ -69,6 +73,16 @@ export default async function initCommand(this: any) {
     default: "shared",
   });
 
+  if (tsDetected) {
+    scriptLang = (await confirm({
+      message:
+        "Typescript config detected. Do you want use ts lang in svelte scripts by default?",
+      default: true,
+    }))
+      ? ScriptLangs.TS
+      : "";
+  }
+
   const config: Config = {
     structure,
     rootDir,
@@ -80,7 +94,7 @@ export default async function initCommand(this: any) {
     sharedDir,
     featuresDir,
     defaultCssLang: "",
-    defaultScriptLang: "",
+    defaultScriptLang: scriptLang,
   };
 
   if (!options.dry) {
@@ -88,17 +102,7 @@ export default async function initCommand(this: any) {
     await generateInitFolders();
   }
 
-  console.log(
-    chalk.blue(`
-        sveil-cli.json created with:
-          rootDir: ${rootDir},
-          libDir: ${libDir},
-          componentssDir: ${componentssDir},
-          servicessDir: ${servicessDir},
-          reactiveServicessDir: ${reactiveServicessDir},
-          statesDir: ${statesDir},
-          structure: ${structure}
-        In ${process.cwd()}  
-      `)
-  );
+  console.log(chalk.blue("sveil-cli.json created with:"));
+  console.log(chalk.blue(JSON.stringify(config, null, 2)));
+  console.log(chalk.blue(`In ${process.cwd()}`));
 }
