@@ -22,8 +22,12 @@ const generate = app
 generate
   .command("component")
   .alias("c")
+  // Made argument optional and add question to interactive tour
   .argument("<componentName>")
-  .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
+  .option("-ce, --css-external", "Put component styles out of component")
+  .option("-sl, --script-lang", "Set component script lang, e.g. 'ts'")
+  .option("-cl, --css-lang", "Set component style lang, e.g. 'scss'")
+  .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);
 
 app.parse(process.argv);
