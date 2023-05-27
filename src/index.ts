@@ -32,6 +32,9 @@ app
       "Set components directory of project"
     )
   )
+  .addOption(
+    new Option("-sd, --services-dir <dir>", "Set services directory of project")
+  )
   .action(initCommand);
 
 const generate = app
