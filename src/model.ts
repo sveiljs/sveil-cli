@@ -17,10 +17,10 @@ export interface Config {
   structure: string;
   rootDir: string;
   libDir: string;
-  componentssDir: string;
-  servicessDir: string;
-  reactiveServicessDir: string;
-  statesDir: string;
+  componentsDir: string;
+  servicesDir: string;
+  reactiveServicesDir: string;
+  stateDir: string;
   sharedDir: string;
   featuresDir?: string;
   defaultScriptLang: ScriptLangs | string;
