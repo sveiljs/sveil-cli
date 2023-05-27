@@ -58,7 +58,14 @@ export const generateFile = async (filePath: string, content: any) => {
 };
 
 export const generateInitFolders = async () => {
-  const { structure, libDir, rootDir, ...config } = await getConfig();
+  const {
+    structure,
+    libDir,
+    rootDir,
+    defaultCssLang,
+    defaultScriptLang,
+    ...config
+  } = await getConfig();
   if (structure === Structure.DOMAIN) {
     for (const key in config) {
       if (Object.prototype.hasOwnProperty.call(config, key)) {
