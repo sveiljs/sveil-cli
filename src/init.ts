@@ -19,23 +19,25 @@ export default async function initCommand(this: any) {
     return;
   }
 
-  const structure = await select({
-    message: "Select a package manager",
-    choices: [
-      {
-        name: Structure.DOMAIN,
-        value: Structure.DOMAIN,
-        description:
-          "Application structure: domain based. All component based files in lib folder with separate folders",
-      },
-      {
-        name: Structure.FEATURE,
-        value: Structure.FEATURE,
-        description:
-          "Application structure: feature based. All component based files in component folder with separate folders",
-      },
-    ],
-  });
+  const structure =
+    options.structure ||
+    (await select({
+      message: "Select a package manager",
+      choices: [
+        {
+          name: Structure.DOMAIN,
+          value: Structure.DOMAIN,
+          description:
+            "Application structure: domain based. All component based files in lib folder with separate folders",
+        },
+        {
+          name: Structure.FEATURE,
+          value: Structure.FEATURE,
+          description:
+            "Application structure: feature based. All component based files in component folder with separate folders",
+        },
+      ],
+    }));
   const rootDir = await input({
     message: "Default main directory",
     default: "src",

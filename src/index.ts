@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { Command } from "commander";
+import { Command, Option } from "commander";
 import initCommand from "./init";
 import { generateComponent } from "./generate-component";
+import { Structure } from "./model";
 
 console.log(Math.random());
 
@@ -12,6 +13,12 @@ app
   .alias("i")
   .description("Init sveil and create sveil config")
   .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
+  .addOption(
+    new Option(
+      "-s, --structure <structure>",
+      "Set structure of project"
+    ).choices(Object.values(Structure))
+  )
   .action(initCommand);
 
 const generate = app
