@@ -20,37 +20,17 @@ app
       "Set structure of project"
     ).choices(Object.values(Structure))
   )
-  .addOption(
-    new Option("-rd, --root-dir <dir>", "Set root directory of project")
+  .option("-rd, --root-dir <dir>", "Set root directory of project")
+  .option("-ld, --lib-dir <dir>", "Set lib directory of project")
+  .option("-fd, --features-dir <dir>", "Set features directory of project")
+  .option("-cd, --components-dir <dir>", "Set components directory of project")
+  .option("-srvd, --services-dir <dir>", "Set services directory of project")
+  .option(
+    "-rsrvd, --reactive-services-dir <dir>",
+    "Set reactive services directory of project"
   )
-  .addOption(new Option("-ld, --lib-dir <dir>", "Set lib directory of project"))
-  .addOption(
-    new Option("-fd, --features-dir <dir>", "Set features directory of project")
-  )
-  .addOption(
-    new Option(
-      "-cd, --components-dir <dir>",
-      "Set components directory of project"
-    )
-  )
-  .addOption(
-    new Option(
-      "-srvd, --services-dir <dir>",
-      "Set services directory of project"
-    )
-  )
-  .addOption(
-    new Option(
-      "-rsrvd, --reactive-services-dir <dir>",
-      "Set reactive services directory of project"
-    )
-  )
-  .addOption(
-    new Option("-std, --state-dir <dir>", "Set state directory of project")
-  )
-  .addOption(
-    new Option("-sd, --shared-dir <dir>", "Set shared directory of project")
-  )
+  .option("-std, --state-dir <dir>", "Set state directory of project")
+  .option("-sd, --shared-dir <dir>", "Set shared directory of project")
   .action(initCommand);
 
 const generate = app
