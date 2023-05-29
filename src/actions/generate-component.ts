@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import { getComponentSchema } from "./schemas/component";
-import { generateFile, getComponentPath, getConfig } from "./utils";
-import { Structure } from "./model";
+import { getComponentSchema } from "../schemas/component";
+import { generateFile, getComponentPath, getConfig } from "../utils";
+import { Structure } from "../model";
 import { mkdir } from "fs/promises";
 import { normalize } from "path";
 const prettier = require("prettier");

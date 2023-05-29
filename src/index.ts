@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command, Option } from "commander";
-import initCommand from "./init";
-import { generateComponent } from "./generate-component";
+import initCommand from "./actions/init";
+import { generateComponent } from "./actions/generate-component";
 import { Structure } from "./model";
 
 console.log(Math.random());

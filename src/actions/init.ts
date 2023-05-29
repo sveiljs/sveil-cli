@@ -2,8 +2,8 @@
 import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
 import select from "@inquirer/select";
-import { Config, ScriptLangs, Structure } from "./model";
-import { generateFile, generateInitFolders, getActionError } from "./utils";
+import { Config, ScriptLangs, Structure } from "../model";
+import { generateFile, generateInitFolders, getActionError } from "../utils";
 import { readdir } from "fs/promises";
 
 export default async function initCommand(this: any) {
