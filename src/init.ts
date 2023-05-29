@@ -35,7 +35,7 @@ export default async function initCommand(this: any) {
 
   let err = await getActionError();
   let featuresDir = "";
-  let scriptLang = "";
+  let scriptLang = options.scriptLanguage || "";
 
   if (err) {
     console.log(chalk.red(err));
@@ -101,7 +101,7 @@ export default async function initCommand(this: any) {
     "shared"
   );
 
-  if (tsDetected) {
+  if (tsDetected && !options.scriptLanguage && !options.skip) {
     scriptLang = (await confirm({
       message:
         "Typescript config detected. Do you want use ts lang in svelte scripts by default?",

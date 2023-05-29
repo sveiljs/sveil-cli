@@ -31,6 +31,12 @@ app
   )
   .option("-std, --state-dir <dir>", "Set state directory of project")
   .option("-sd, --shared-dir <dir>", "Set shared directory of project")
+  .addOption(
+    new Option(
+      "-sl, --script-language <language>",
+      "Set default script language"
+    ).choices(["ts"])
+  )
   .action(initCommand);
 
 const generate = app
