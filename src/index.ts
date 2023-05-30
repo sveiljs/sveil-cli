@@ -50,7 +50,12 @@ generate
   // Made argument optional and add question to interactive tour
   .argument("<componentName>")
   .option("-ce, --css-external", "Put component styles out of component")
-  .option("-sl, --script-lang", "Set component script lang, e.g. 'ts'")
+  .addOption(
+    new Option(
+      "-sl, --script-language <language>",
+      "Set component script language"
+    ).choices(["ts", "js"])
+  )
   .option("-cl, --css-lang", "Set component style lang, e.g. 'scss'")
   .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);

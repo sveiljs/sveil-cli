@@ -4,7 +4,10 @@ export const getComponentSchema = async (
   fileName: string,
   { externalCss, scriptLang, CssLang }: ComponentSchemaOptions = {}
 ) => {
-  const scriptLangTemplate = scriptLang ? `lang='${scriptLang}'` : "";
+  const scriptLangTemplate =
+    scriptLang && scriptLang.toLocaleLowerCase() !== "js"
+      ? `lang='${scriptLang}'`
+      : "";
   const cssLangTemplate = CssLang ? `lang='${CssLang}'` : "";
 
   const script = `
