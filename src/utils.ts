@@ -103,3 +103,8 @@ export const getComponentPath = async (fileName: string) => {
     `${process.cwd()}/${rootDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
   );
 };
+
+export const isTsDetected = async () => {
+  const rootFiles = await readdir(process.cwd());
+  return rootFiles.includes("tsconfig.json");
+};

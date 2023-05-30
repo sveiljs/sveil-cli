@@ -3,13 +3,16 @@ import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
 import select from "@inquirer/select";
 import { Config, ScriptLangs, Structure } from "../model";
-import { generateFile, generateInitFolders, getActionError } from "../utils";
+import {
+  generateFile,
+  generateInitFolders,
+  getActionError,
+  isTsDetected,
+} from "../utils";
 import { readdir } from "fs/promises";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
-  const rootFiles = await readdir(process.cwd());
-  const tsDetected = rootFiles.includes("tsconfig.json");
 
   const getDirChoice = async (
     option: string,
@@ -101,7 +104,7 @@ export default async function initCommand(this: any) {
     "shared"
   );
 
-  if (tsDetected && !options.scriptLanguage && !options.skip) {
+  if ((await isTsDetected()) && !options.scriptLanguage && !options.skip) {
     scriptLang = (await confirm({
       message:
         "Typescript config detected. Do you want use ts lang in svelte scripts by default?",
