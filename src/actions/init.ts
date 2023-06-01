@@ -9,7 +9,6 @@ import {
   getActionError,
   isTsDetected,
 } from "../utils";
-import { readdir } from "fs/promises";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
