@@ -92,12 +92,22 @@ export const getConfig = async () => {
   return JSON.parse(json) as Config;
 };
 
-export const getComponentPath = async (fileName: string) => {
+export const getComponentPath = async (
+  fileName: string,
+  extraFolder = false
+) => {
   const { structure, rootDir, libDir, componentsDir, featuresDir } =
     await getConfig();
 
   if (structure === Structure.DOMAIN) {
-    return normalize(`${process.cwd()}/${rootDir}/${libDir}/${componentsDir}`);
+    if (!extraFolder) {
+      return normalize(
+        `${process.cwd()}/${rootDir}/${libDir}/${componentsDir}`
+      );
+    }
+    return normalize(
+      `${process.cwd()}/${rootDir}/${libDir}/${componentsDir}/${fileName}`
+    );
   }
   return normalize(
     `${process.cwd()}/${rootDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
@@ -108,3 +118,8 @@ export const isTsDetected = async () => {
   const rootFiles = await readdir(process.cwd());
   return rootFiles.includes("tsconfig.json");
 };
+
+export const toLowerCase = (str: string) => str.toLocaleLowerCase();
+
+export const logGeneratedFile = (fileName: string, fullPath: string) =>
+  console.log(chalk.blue(`- file ${fileName} generated in ${fullPath}`.trim()));

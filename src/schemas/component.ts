@@ -1,36 +1,29 @@
 import { ComponentSchemaOptions } from "../model";
+import { getCssimport, getCssTemplate } from "./style";
 
 export const getComponentSchema = async (
   fileName: string,
-  { externalCss, scriptLang, CssLang }: ComponentSchemaOptions = {}
+  { scriptLanguage, cssLanguage, cssExternal }: ComponentSchemaOptions = {}
 ) => {
   const scriptLangTemplate =
-    scriptLang && scriptLang.toLocaleLowerCase() !== "js"
-      ? `lang='${scriptLang}'`
+    scriptLanguage && scriptLanguage.toLocaleLowerCase() !== "js"
+      ? `lang='${scriptLanguage}'`
       : "";
-  const cssLangTemplate = CssLang ? `lang='${CssLang}'` : "";
 
   const script = `
     <script ${scriptLangTemplate}>
-      let componentName = "${fileName}";
+      ${cssExternal ? getCssimport() : ""}
+      let name = "${fileName}";
     </script>
   `.trim();
 
   const template = `
       <div class=${fileName}>
-        {componentName}
+        {name}
       </div>
   `.trim();
 
-  const css = externalCss
-    ? ""
-    : `<style ${cssLangTemplate}>
-      .${fileName} {
-        margin: 0;
-        padding: 0;
-      }
-    </style>
-  `.trim();
+  const css = cssExternal ? "" : getCssTemplate(fileName, cssLanguage);
 
   return script + template + css;
 };

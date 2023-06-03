@@ -28,7 +28,7 @@ export interface Config {
 }
 
 export interface ComponentSchemaOptions {
-  scriptLang?: ScriptLangs | string;
-  CssLang?: CssLangs | string;
-  externalCss?: boolean;
+  scriptLanguage?: ScriptLangs | string;
+  cssLanguage?: CssLangs | string;
+  cssExternal?: boolean;
 }

@@ -3,8 +3,7 @@ import { Command, Option } from "commander";
 import initCommand from "./actions/init";
 import { generateComponent } from "./actions/generate-component";
 import { Structure } from "./model";
-
-console.log(Math.random());
+import { toLowerCase } from "./utils";
 
 const app = new Command();
 
@@ -48,15 +47,24 @@ generate
   .command("component")
   .alias("c")
   // Made argument optional and add question to interactive tour
-  .argument("<componentName>")
-  .option("-ce, --css-external", "Put component styles out of component")
+  // remove existed component before regeneration
+  // warning when creating compoent with existed name (add override option)
+  .argument("<componentName>", "Component name", toLowerCase)
   .addOption(
     new Option(
       "-sl, --script-language <language>",
       "Set component script language"
     ).choices(["ts", "js"])
   )
-  .option("-cl, --css-lang", "Set component style lang, e.g. 'scss'")
+  .option("-ce, --css-external", "Put component styles out of component")
+  .addOption(
+    new Option(
+      "-cl, --css-language <language>",
+      "Set component style language, e.g. 'scss'"
+    )
+      .choices(["scss", "postcss"])
+      .conflicts(["cssExternal"])
+  )
   .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);
 

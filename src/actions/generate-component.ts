@@ -6,15 +6,19 @@ import {
   getComponentPath,
   getConfig,
   isTsDetected,
+  logGeneratedFile,
 } from "../utils";
-import { Structure } from "../model";
 import { mkdir } from "fs/promises";
 import { normalize } from "path";
+import { getCssMainRule } from "../schemas/style";
 const prettier = require("prettier");
 
-export const generateComponent = async (fileName: string, options: any) => {
+export const generateComponent = async (
+  componentName: string,
+  options: any
+) => {
   try {
-    const { dry, scriptLanguage } = options;
+    const { dry, scriptLanguage, cssLanguage, cssExternal } = options;
 
     if (
       !(await isTsDetected()) &&
@@ -23,15 +27,17 @@ export const generateComponent = async (fileName: string, options: any) => {
       throw "Typescript is not detected, can't set 'ts' as component script language";
     }
 
-    const { structure, defaultScriptLang } = await getConfig();
+    const { defaultScriptLang } = await getConfig();
 
-    const folderPath = await getComponentPath(fileName);
+    const folderPath = await getComponentPath(componentName, cssExternal);
 
-    const fullPath = normalize(`${folderPath}/${fileName}.svelte`);
+    const fullPath = normalize(`${folderPath}/${componentName}.svelte`);
 
     const componentBody = prettier.format(
-      await getComponentSchema(fileName, {
-        scriptLang: scriptLanguage || defaultScriptLang,
+      await getComponentSchema(componentName, {
+        scriptLanguage: scriptLanguage || defaultScriptLang,
+        cssExternal,
+        cssLanguage,
       }),
       {
         parser: "svelte",
@@ -39,19 +45,19 @@ export const generateComponent = async (fileName: string, options: any) => {
     );
 
     if (!dry) {
-      if (structure === Structure.DOMAIN) {
-        await generateFile(fullPath, componentBody);
-      } else {
-        await mkdir(folderPath, { recursive: true });
-        await generateFile(fullPath, componentBody);
+      await mkdir(folderPath, { recursive: true });
+
+      if (cssExternal) {
+        const styleFileName = "style.css";
+        const cssFilePath = normalize(`${folderPath}/${styleFileName}`);
+        await generateFile(cssFilePath, getCssMainRule(componentName));
+        logGeneratedFile(`${styleFileName}`, cssFilePath);
       }
+
+      await generateFile(fullPath, componentBody);
     }
 
-    console.log(
-      chalk.blue(`
-        svelte component ${fileName}.svelte generated in ${fullPath}
-      `)
-    );
+    logGeneratedFile(`${componentName}.svelte`, fullPath);
   } catch (error) {
     console.log(chalk.red("Can't generate component: "));
     console.log(chalk.dim(error));
