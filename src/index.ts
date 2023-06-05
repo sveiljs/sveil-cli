@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import { Command, Option } from "commander";
 import initCommand from "./actions/init";
-import { generateComponent } from "./actions/generate-component";
 import { Structure } from "./model";
 import { toLowerCase } from "./utils";
+import { generateComponent } from "./actions/generate/component";
 
 const app = new Command();
 
 app
+  // add option for global config
   .command("init")
   .alias("i")
   .description("Init sveil and create sveil config")

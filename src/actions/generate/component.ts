@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import { getComponentSchema } from "../schemas/component";
+import { getComponentSchema } from "../../schemas/component";
 import {
   generateFile,
   getComponentPath,
@@ -10,10 +10,10 @@ import {
   isTsDetected,
   logGeneratedFile,
   removeDuplicates,
-} from "../utils";
+} from "../../utils";
 import { mkdir } from "fs/promises";
 import { normalize } from "path";
-import { getCssMainRule } from "../schemas/style";
+import { getCssMainRule } from "../../schemas/style";
 import { input } from "@inquirer/prompts";
 const prettier = require("prettier");
 
