@@ -65,6 +65,7 @@ generate
       .choices(["scss", "postcss"])
       .conflicts(["cssExternal"])
   )
+  .option("-o, --overwrite", "WARNING: Overwriting existed component")
   .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);
 

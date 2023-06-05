@@ -2,7 +2,7 @@
 import chalk from "chalk";
 import { fork } from "child_process";
 import { writeFile } from "fs";
-import { mkdir, readFile, readdir } from "fs/promises";
+import { mkdir, readFile, readdir, rm, stat, unlink } from "fs/promises";
 import { Config, Structure } from "./model";
 import { normalize } from "path";
 
@@ -92,6 +92,11 @@ export const getConfig = async () => {
   return JSON.parse(json) as Config;
 };
 
+export const getComponentsDir = async () => {
+  const { rootDir, libDir, componentsDir } = await getConfig();
+  return normalize(`${process.cwd()}/${rootDir}/${libDir}/${componentsDir}`);
+};
+
 export const getComponentPath = async (
   fileName: string,
   extraFolder = false
@@ -101,13 +106,9 @@ export const getComponentPath = async (
 
   if (structure === Structure.DOMAIN) {
     if (!extraFolder) {
-      return normalize(
-        `${process.cwd()}/${rootDir}/${libDir}/${componentsDir}`
-      );
+      return await getComponentsDir();
     }
-    return normalize(
-      `${process.cwd()}/${rootDir}/${libDir}/${componentsDir}/${fileName}`
-    );
+    return normalize(`${await getComponentsDir()}/${fileName}`);
   }
   return normalize(
     `${process.cwd()}/${rootDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
@@ -117,6 +118,34 @@ export const getComponentPath = async (
 export const isTsDetected = async () => {
   const rootFiles = await readdir(process.cwd());
   return rootFiles.includes("tsconfig.json");
+};
+
+export const isCompoentExisted = async (componentName: string) => {
+  const files = await readdir(await getComponentsDir());
+  return (
+    files.includes(componentName) || files.includes(`${componentName}.svelte`)
+  );
+};
+
+export const removeDuplicates = async (folder: string, name: string) => {
+  if (!name || !folder) return;
+
+  const files = await readdir(normalize(folder));
+  files.forEach(async (f) => {
+    const entityName = f.split(".")[0];
+    if (entityName === name) {
+      const filePath = normalize(`${folder}/${f}`);
+      const stats = await stat(filePath);
+      if (stats.isDirectory()) {
+        await rm(filePath, {
+          recursive: true,
+          force: true,
+        });
+      } else {
+        await unlink(filePath);
+      }
+    }
+  });
 };
 
 export const toLowerCase = (str: string) => str.toLocaleLowerCase();
