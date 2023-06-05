@@ -47,8 +47,6 @@ generate
   .command("component")
   .alias("c")
   // Made argument optional and add question to interactive tour
-  // remove existed component before regeneration
-  // warning when creating compoent with existed name (add override option)
   .argument("<componentName>", "Component name", toLowerCase)
   .addOption(
     new Option(
