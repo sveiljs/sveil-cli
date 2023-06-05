@@ -66,6 +66,7 @@ generate
       .conflicts(["cssExternal"])
   )
   .option("-o, --overwrite", "WARNING: Overwriting existed component")
+  .option("-s, --separate", "Generate component in separate folder")
   .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);
 

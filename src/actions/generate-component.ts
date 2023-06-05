@@ -22,8 +22,14 @@ export const generateComponent = async (
   options: any
 ) => {
   try {
-    const { dry, scriptLanguage, cssLanguage, cssExternal, overwrite } =
-      options;
+    const {
+      dry,
+      scriptLanguage,
+      cssLanguage,
+      cssExternal,
+      overwrite,
+      separate,
+    } = options;
 
     if (
       !(await isTsDetected()) &&
@@ -46,7 +52,10 @@ export const generateComponent = async (
       console.log(chalk.redBright("Existed component removed!"));
     }
 
-    const folderPath = await getComponentPath(componentName, cssExternal);
+    const folderPath = await getComponentPath(
+      componentName,
+      cssExternal || separate
+    );
     const fullPath = normalize(`${folderPath}/${componentName}.svelte`);
     const componentBody = prettier.format(
       await getComponentSchema(componentName, {
