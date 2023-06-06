@@ -4,6 +4,7 @@ import initCommand from "./actions/init";
 import { Structure } from "./model";
 import { toLowerCase } from "./utils";
 import { generateComponent } from "./actions/generate/component";
+import { generateReactiveService } from "./actions/generate/reactive-service";
 
 const app = new Command();
 
@@ -68,5 +69,12 @@ generate
   .option("-s, --separate", "Generate component in separate folder")
   .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
   .action(generateComponent);
+
+generate
+  .command("reactive-service")
+  .alias("rs")
+  .argument("<componentName>", "Target component name", toLowerCase)
+  .argument("<serviceName>", "Service name", toLowerCase)
+  .action(generateReactiveService);
 
 app.parse(process.argv);
