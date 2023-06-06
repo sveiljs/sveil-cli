@@ -15,12 +15,12 @@ app
   .description("Init sveil and create sveil config")
   .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
   .option("-y, --skip", "Skip interactive tour and init with default values")
-  .addOption(
-    new Option(
-      "-s, --structure <structure>",
-      "Set structure of project"
-    ).choices(Object.values(Structure))
-  )
+  // .addOption(
+  //   new Option(
+  //     "-s, --structure <structure>",
+  //     "Set structure of project"
+  //   ).choices(Object.values(Structure))
+  // )
   .option("-rd, --root-dir <dir>", "Set root directory of project")
   .option("-ld, --lib-dir <dir>", "Set lib directory of project")
   .option("-fd, --features-dir <dir>", "Set features directory of project")

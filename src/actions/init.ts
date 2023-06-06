@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { input, confirm } from "@inquirer/prompts";
 import chalk from "chalk";
-import select from "@inquirer/select";
+// import select from "@inquirer/select";
 import { Config, ScriptLangs, Structure } from "../model";
 import {
   generateFile,
@@ -25,10 +25,10 @@ export default async function initCommand(this: any) {
       default: defaultValue,
     }));
 
-  const DEFAULT_STRUCTURE = Structure.DOMAIN;
+  // const DEFAULT_STRUCTURE = Structure.DOMAIN;
   const DEFAULT_ROOT_DIR = "src";
   const DEFAULT_LIB_DIR = "lib";
-  const DEFAULT_FEATURES_DIR = "features";
+  // const DEFAULT_FEATURES_DIR = "features";
   const DEFAULT_COMPONENTS_DIR = "components";
   const DEFAULT_SERVICES_DIR = "services";
   const DEFAULT_REACTIVE_SERVICES_DIR = "$services";
@@ -44,38 +44,38 @@ export default async function initCommand(this: any) {
     return;
   }
 
-  const structure =
-    options.structure ||
-    (options.skip && DEFAULT_STRUCTURE) ||
-    (await select({
-      message: "Select a package manager",
-      choices: [
-        {
-          name: Structure.DOMAIN,
-          value: Structure.DOMAIN,
-          description:
-            "Application structure: domain based. All component based files in lib folder with separate folders",
-        },
-        {
-          name: Structure.FEATURE,
-          value: Structure.FEATURE,
-          description:
-            "Application structure: feature based. All component based files in component folder with separate folders",
-        },
-      ],
-    }));
+  // const structure =
+  //   options.structure ||
+  //   (options.skip && DEFAULT_STRUCTURE) ||
+  //   (await select({
+  //     message: "Select a package manager",
+  //     choices: [
+  //       {
+  //         name: Structure.DOMAIN,
+  //         value: Structure.DOMAIN,
+  //         description:
+  //           "Application structure: domain based. All component based files in lib folder with separate folders",
+  //       },
+  //       {
+  //         name: Structure.FEATURE,
+  //         value: Structure.FEATURE,
+  //         description:
+  //           "Application structure: feature based. All component based files in component folder with separate folders",
+  //       },
+  //     ],
+  //   }));
 
   const rootDir = await getDirChoice("rootDir", DEFAULT_ROOT_DIR, "root");
 
   const libDir = await getDirChoice("libDir", DEFAULT_LIB_DIR, "library");
 
-  if (structure === Structure.FEATURE) {
-    featuresDir = await getDirChoice(
-      "featuresDir",
-      DEFAULT_FEATURES_DIR,
-      "features"
-    );
-  }
+  // if (structure === Structure.FEATURE) {
+  //   featuresDir = await getDirChoice(
+  //     "featuresDir",
+  //     DEFAULT_FEATURES_DIR,
+  //     "features"
+  //   );
+  // }
 
   const componentsDir = await getDirChoice(
     "componentsDir",
@@ -114,7 +114,7 @@ export default async function initCommand(this: any) {
   }
 
   const config: Config = {
-    structure,
+    structure: Structure.DOMAIN,
     rootDir,
     libDir,
     componentsDir,
@@ -122,7 +122,7 @@ export default async function initCommand(this: any) {
     reactiveServicesDir,
     stateDir,
     sharedDir,
-    featuresDir,
+    // featuresDir,
     defaultCssLang: "",
     defaultScriptLang: scriptLang,
   };
