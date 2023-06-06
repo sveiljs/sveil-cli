@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { Command, Option } from "commander";
 import initCommand from "./actions/init";
-import { Structure } from "./model";
+// import { Structure } from "./model";
 import { toLowerCase } from "./utils";
 import { generateComponent } from "./actions/generate/component";
 import { generateReactiveService } from "./actions/generate/reactive-service";
@@ -9,12 +9,13 @@ import { generateReactiveService } from "./actions/generate/reactive-service";
 const app = new Command();
 
 app
-  // add option for global config
+  // add option for global config (is it possible?)
   .command("init")
   .alias("i")
   .description("Init sveil and create sveil config")
   .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
   .option("-y, --skip", "Skip interactive tour and init with default values")
+  // need investigate use cases for feature structure
   // .addOption(
   //   new Option(
   //     "-s, --structure <structure>",
@@ -44,7 +45,6 @@ const generate = app
 generate
   .command("component")
   .alias("c")
-  // Made argument optional and add question to interactive tour
   .argument("<componentName>", "Component name", toLowerCase)
   .addOption(
     new Option(
