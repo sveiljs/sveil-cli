@@ -31,12 +31,11 @@ export default async function initCommand(this: any) {
   // const DEFAULT_FEATURES_DIR = "features";
   const DEFAULT_COMPONENTS_DIR = "components";
   const DEFAULT_SERVICES_DIR = "services";
-  const DEFAULT_REACTIVE_SERVICES_DIR = "$services";
   const DEFAULT_STATE_DIR = "state";
   const DEFAULT_SHARED_DIR = "shared";
 
   let err = await getActionError();
-  let featuresDir = "";
+  // let featuresDir = "";
   let scriptLang = options.scriptLanguage || "";
 
   if (err) {
@@ -89,12 +88,6 @@ export default async function initCommand(this: any) {
     "services"
   );
 
-  const reactiveServicesDir = await getDirChoice(
-    "reactiveServicesDir",
-    DEFAULT_REACTIVE_SERVICES_DIR,
-    "reactive services"
-  );
-
   const stateDir = await getDirChoice("stateDir", DEFAULT_STATE_DIR, "state");
 
   const sharedDir = await getDirChoice(
@@ -119,7 +112,6 @@ export default async function initCommand(this: any) {
     libDir,
     componentsDir,
     servicesDir,
-    reactiveServicesDir,
     stateDir,
     sharedDir,
     // featuresDir,

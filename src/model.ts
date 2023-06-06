@@ -19,7 +19,6 @@ export interface Config {
   libDir: string;
   componentsDir: string;
   servicesDir: string;
-  reactiveServicesDir: string;
   stateDir: string;
   sharedDir: string;
   featuresDir?: string;

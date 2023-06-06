@@ -26,10 +26,6 @@ app
   .option("-fd, --features-dir <dir>", "Set features directory of project")
   .option("-cd, --components-dir <dir>", "Set components directory of project")
   .option("-srvd, --services-dir <dir>", "Set services directory of project")
-  .option(
-    "-rsrvd, --reactive-services-dir <dir>",
-    "Set reactive services directory of project"
-  )
   .option("-std, --state-dir <dir>", "Set state directory of project")
   .option("-sd, --shared-dir <dir>", "Set shared directory of project")
   .addOption(
