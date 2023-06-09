@@ -4,7 +4,7 @@ import initCommand from "./actions/init";
 // import { Structure } from "./model";
 import { toLowerCase } from "./utils";
 import { generateComponent } from "./actions/generate/component";
-import { generateReactiveService } from "./actions/generate/reactive-service";
+import { generateComponentState } from "./actions/generate/component-state";
 
 const app = new Command();
 
@@ -67,10 +67,9 @@ generate
   .action(generateComponent);
 
 generate
-  .command("reactive-service")
-  .alias("rs")
-  .argument("<componentName>", "Target component name", toLowerCase)
-  .argument("<serviceName>", "Service name", toLowerCase)
-  .action(generateReactiveService);
+  .command("component-state")
+  .alias("cs")
+  .argument("<componentName>", "Target component name")
+  .action(generateComponentState);
 
 app.parse(process.argv);

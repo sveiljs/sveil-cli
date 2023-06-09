@@ -1,5 +1,5 @@
-import { ComponentSchemaOptions } from "../model";
-import { getCssimport, getCssTemplate } from "./style";
+import { ComponentSchemaOptions } from "../../model";
+import { getCssimport, getCssTemplate } from "../style";
 
 export const getComponentSchema = async (
   fileName: string,

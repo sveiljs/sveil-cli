@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import { getComponentSchema } from "../../schemas/component";
+import { getComponentSchema } from "../../schemas/component/component";
 import {
   generateFile,
   getComponentPath,
