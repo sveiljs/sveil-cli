@@ -132,10 +132,10 @@ export const removeDuplicates = async (folder: string, name: string) => {
 
   const files = await readdir(normalize(folder));
 
-  for (const f of files) {
-    const entityName = f.split(".")[0];
+  for (const file of files) {
+    const entityName = file.split(".")[0];
     if (entityName === name) {
-      const filePath = normalize(`${folder}/${f}`);
+      const filePath = normalize(`${folder}/${file}`);
       const stats = await stat(filePath);
       if (stats.isDirectory()) {
         await rm(filePath, {
