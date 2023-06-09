@@ -9,6 +9,7 @@ import {
   getActionError,
   isTsDetected,
 } from "../utils";
+import { defaultConfig } from "../config";
 
 export default async function initCommand(this: any) {
   const options = this.opts();
@@ -25,18 +26,9 @@ export default async function initCommand(this: any) {
       default: defaultValue,
     }));
 
-  // const DEFAULT_STRUCTURE = Structure.DOMAIN;
-  const DEFAULT_ROOT_DIR = "src";
-  const DEFAULT_LIB_DIR = "lib";
-  // const DEFAULT_FEATURES_DIR = "features";
-  const DEFAULT_COMPONENTS_DIR = "components";
-  const DEFAULT_SERVICES_DIR = "services";
-  const DEFAULT_STATE_DIR = "state";
-  const DEFAULT_SHARED_DIR = "shared";
-
   let err = await getActionError();
-  // let featuresDir = "";
   let scriptLang = options.scriptLanguage || "";
+  // let featuresDir = "";
 
   if (err) {
     console.log(chalk.red(err));
@@ -64,10 +56,6 @@ export default async function initCommand(this: any) {
   //     ],
   //   }));
 
-  const sourceDir = await getDirChoice("sourceDir", DEFAULT_ROOT_DIR, "root");
-
-  const libDir = await getDirChoice("libDir", DEFAULT_LIB_DIR, "library");
-
   // if (structure === Structure.FEATURE) {
   //   featuresDir = await getDirChoice(
   //     "featuresDir",
@@ -76,23 +64,35 @@ export default async function initCommand(this: any) {
   //   );
   // }
 
+  const sourceDir = await getDirChoice(
+    "sourceDir",
+    defaultConfig.sourceDir,
+    "source"
+  );
+
+  const libDir = await getDirChoice("libDir", defaultConfig.libDir, "library");
+
   const componentsDir = await getDirChoice(
     "componentsDir",
-    DEFAULT_COMPONENTS_DIR,
+    defaultConfig.componentsDir,
     "components"
   );
 
   const servicesDir = await getDirChoice(
     "servicesDir",
-    DEFAULT_SERVICES_DIR,
+    defaultConfig.servicesDir,
     "services"
   );
 
-  const stateDir = await getDirChoice("stateDir", DEFAULT_STATE_DIR, "state");
+  const stateDir = await getDirChoice(
+    "stateDir",
+    defaultConfig.stateDir,
+    "state"
+  );
 
   const sharedDir = await getDirChoice(
     "sharedDir",
-    DEFAULT_SHARED_DIR,
+    defaultConfig.sharedDir,
     "shared"
   );
 
@@ -114,9 +114,9 @@ export default async function initCommand(this: any) {
     servicesDir,
     stateDir,
     sharedDir,
-    // featuresDir,
     defaultCssLang: "",
     defaultScriptLang: scriptLang,
+    // featuresDir,
   };
 
   if (!options.dry) {

@@ -22,9 +22,9 @@ app
   //     "Set structure of project"
   //   ).choices(Object.values(Structure))
   // )
-  .option("-rd, --root-dir <dir>", "Set root directory of project")
+  // .option("-fd, --features-dir <dir>", "Set features directory of project")
+  .option("-srcd, --source-dir <dir>", "Set source directory of project")
   .option("-ld, --lib-dir <dir>", "Set lib directory of project")
-  .option("-fd, --features-dir <dir>", "Set features directory of project")
   .option("-cd, --components-dir <dir>", "Set components directory of project")
   .option("-srvd, --services-dir <dir>", "Set services directory of project")
   .option("-std, --state-dir <dir>", "Set state directory of project")
