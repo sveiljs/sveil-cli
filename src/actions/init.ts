@@ -64,7 +64,7 @@ export default async function initCommand(this: any) {
   //     ],
   //   }));
 
-  const rootDir = await getDirChoice("rootDir", DEFAULT_ROOT_DIR, "root");
+  const sourceDir = await getDirChoice("sourceDir", DEFAULT_ROOT_DIR, "root");
 
   const libDir = await getDirChoice("libDir", DEFAULT_LIB_DIR, "library");
 
@@ -108,7 +108,7 @@ export default async function initCommand(this: any) {
 
   const config: Config = {
     structure: Structure.DOMAIN,
-    rootDir,
+    sourceDir,
     libDir,
     componentsDir,
     servicesDir,

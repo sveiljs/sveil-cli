@@ -61,7 +61,7 @@ export const generateInitFolders = async () => {
   const {
     structure,
     libDir,
-    rootDir,
+    sourceDir,
     defaultCssLang,
     defaultScriptLang,
     ...config
@@ -70,7 +70,7 @@ export const generateInitFolders = async () => {
     for (const key in config) {
       if (Object.prototype.hasOwnProperty.call(config, key)) {
         const dir = config[key];
-        await mkdir(normalize(`./${rootDir}/${libDir}/${dir}`), {
+        await mkdir(normalize(`./${sourceDir}/${libDir}/${dir}`), {
           recursive: true,
         });
       }
@@ -78,7 +78,7 @@ export const generateInitFolders = async () => {
   } else {
     const { sharedDir, stateDir, featuresDir } = config;
     [stateDir, sharedDir, featuresDir].forEach(async (dir) => {
-      await mkdir(normalize(`./${rootDir}/${libDir}/${dir}`), {
+      await mkdir(normalize(`./${sourceDir}/${libDir}/${dir}`), {
         recursive: true,
       });
     });
@@ -93,15 +93,15 @@ export const getConfig = async () => {
 };
 
 export const getComponentsDir = async () => {
-  const { rootDir, libDir, componentsDir } = await getConfig();
-  return normalize(`${process.cwd()}/${rootDir}/${libDir}/${componentsDir}`);
+  const { sourceDir, libDir, componentsDir } = await getConfig();
+  return normalize(`${process.cwd()}/${sourceDir}/${libDir}/${componentsDir}`);
 };
 
 export const getComponentPath = async (
   fileName: string,
   extraFolder = false
 ) => {
-  const { structure, rootDir, libDir, componentsDir, featuresDir } =
+  const { structure, sourceDir, libDir, componentsDir, featuresDir } =
     await getConfig();
 
   if (structure === Structure.DOMAIN) {
@@ -111,7 +111,7 @@ export const getComponentPath = async (
     return normalize(`${await getComponentsDir()}/${fileName}`);
   }
   return normalize(
-    `${process.cwd()}/${rootDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
+    `${process.cwd()}/${sourceDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
   );
 };
 

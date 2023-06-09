@@ -15,15 +15,15 @@ export enum CssLangs {
 
 export interface Config {
   structure: string;
-  rootDir: string;
+  sourceDir: string;
   libDir: string;
   componentsDir: string;
   servicesDir: string;
   stateDir: string;
   sharedDir: string;
   featuresDir?: string;
-  defaultScriptLang: ScriptLangs | string;
-  defaultCssLang: CssLangs | string;
+  defaultScriptLang?: ScriptLangs | string;
+  defaultCssLang?: CssLangs | string;
 }
 
 export interface ComponentSchemaOptions {
