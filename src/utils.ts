@@ -130,20 +130,20 @@ export const isCompoentExisted = async (componentName: string) => {
 export const removeDuplicates = async (folder: string, name: string) => {
   if (!name || !folder) return;
 
-  const files = await readdir(normalize(folder));
+  const nodes = await readdir(normalize(folder));
 
-  for (const file of files) {
-    const entityName = file.split(".")[0];
+  for (const node of nodes) {
+    const entityName = node.split(".")[0];
     if (entityName === name) {
-      const filePath = normalize(`${folder}/${file}`);
-      const stats = await stat(filePath);
-      if (stats.isDirectory()) {
-        await rm(filePath, {
+      const path = normalize(`${folder}/${node}`);
+      const pathStats = await stat(path);
+      if (pathStats.isDirectory()) {
+        await rm(path, {
           recursive: true,
           force: true,
         });
       } else {
-        await unlink(filePath);
+        await unlink(path);
       }
     }
   }
