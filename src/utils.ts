@@ -130,7 +130,9 @@ export const isCompoentExisted = async (componentName: string) => {
 export const removeDuplicates = async (folder: string, name: string) => {
   if (!name || !folder) return;
 
-  (await readdir(normalize(folder))).forEach(async (f) => {
+  const files = await readdir(normalize(folder));
+
+  for (const f of files) {
     const entityName = f.split(".")[0];
     if (entityName === name) {
       const filePath = normalize(`${folder}/${f}`);
@@ -144,7 +146,7 @@ export const removeDuplicates = async (folder: string, name: string) => {
         await unlink(filePath);
       }
     }
-  });
+  }
 };
 
 export const toLowerCase = (str: string) => str.toLocaleLowerCase();
