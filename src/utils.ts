@@ -3,8 +3,9 @@ import chalk from "chalk";
 import { fork } from "child_process";
 import { writeFile } from "fs";
 import { mkdir, readFile, readdir, rm, stat, unlink } from "fs/promises";
-import { Config, Structure } from "./model";
+import { Config, ScriptLangs, Structure } from "./model";
 import { normalize } from "path";
+import { defaultConfig } from "./config";
 
 export const runScript = async (
   scriptPath: string,
@@ -35,6 +36,12 @@ export const runScript = async (
 //   if (err) throw err;
 //   console.log("finished running some-script.js ");
 // });
+
+export const createDir = async (path: string) => {
+  await mkdir(normalize(path), {
+    recursive: true,
+  });
+};
 
 export const getActionError = async () => {
   const files = await readdir(process.cwd());
@@ -70,26 +77,30 @@ export const generateInitFolders = async () => {
     for (const key in config) {
       if (Object.prototype.hasOwnProperty.call(config, key)) {
         const dir = config[key];
-        await mkdir(normalize(`./${sourceDir}/${libDir}/${dir}`), {
-          recursive: true,
-        });
+        await createDir(`./${sourceDir}/${libDir}/${dir}`);
       }
     }
   } else {
     const { sharedDir, stateDir, featuresDir } = config;
     [stateDir, sharedDir, featuresDir].forEach(async (dir) => {
-      await mkdir(normalize(`./${sourceDir}/${libDir}/${dir}`), {
-        recursive: true,
-      });
+      await createDir(`./${sourceDir}/${libDir}/${dir}`);
     });
   }
 };
 
-export const getConfig = async () => {
-  const json = await readFile(process.cwd() + "/sveil-cli.json", {
-    encoding: "utf8",
-  });
-  return JSON.parse(json) as Config;
+export const getConfig = async (): Promise<Config> => {
+  try {
+    const json = await readFile(process.cwd() + "/sveil-cli.json", {
+      encoding: "utf8",
+    });
+    return JSON.parse(json) as Config;
+  } catch (error) {
+    const defaultScriptLang = (await isTsDetected()) ? ScriptLangs.TS : "";
+    return {
+      ...defaultConfig,
+      defaultScriptLang,
+    } as Config;
+  }
 };
 
 export const getComponentsDir = async () => {
@@ -121,10 +132,14 @@ export const isTsDetected = async () => {
 };
 
 export const isCompoentExisted = async (componentName: string) => {
-  const files = await readdir(await getComponentsDir());
-  return (
-    files.includes(componentName) || files.includes(`${componentName}.svelte`)
-  );
+  try {
+    const files = await readdir(await getComponentsDir());
+    return (
+      files.includes(componentName) || files.includes(`${componentName}.svelte`)
+    );
+  } catch (error) {
+    return false;
+  }
 };
 
 export const removeDuplicates = async (folder: string, name: string) => {
@@ -149,7 +164,7 @@ export const removeDuplicates = async (folder: string, name: string) => {
   }
 };
 
-export const toLowerCase = (str: string) => str.toLocaleLowerCase();
+export const toLowerCase = (str: string) => str?.toLocaleLowerCase?.();
 
 export const logGeneratedFile = (fileName: string, fullPath: string) =>
   console.log(chalk.blue(`- file ${fileName} generated in ${fullPath}`.trim()));

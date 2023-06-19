@@ -2,19 +2,14 @@
 import chalk from "chalk";
 import { getComponentSchema } from "../../schemas/component/component";
 import {
+  createDir,
   generateFile,
   getComponentPath,
-  getComponentsDir,
   getConfig,
-  isCompoentExisted,
-  isTsDetected,
   logGeneratedFile,
-  removeDuplicates,
 } from "../../utils";
-import { mkdir } from "fs/promises";
 import { normalize } from "path";
 import { getCssMainRule } from "../../schemas/style";
-import { input } from "@inquirer/prompts";
 const prettier = require("prettier");
 
 export const generateComponent = async (
@@ -22,36 +17,9 @@ export const generateComponent = async (
   options: any
 ) => {
   try {
-    const {
-      dry,
-      scriptLanguage,
-      cssLanguage,
-      cssExternal,
-      overwrite,
-      separate,
-    } = options;
-
-    if (
-      !(await isTsDetected()) &&
-      scriptLanguage.toLocaleLowerCase() === "ts"
-    ) {
-      throw "Typescript is not detected, can't set 'ts' as component script language";
-    }
-
-    const { defaultScriptLang } = await getConfig();
-
-    if (await isCompoentExisted(componentName)) {
-      const msg =
-        "Can't rewrite existed component, please, provide '-o, -overwrite' option";
-      if (!overwrite) throw msg;
-      const confirm = await input({
-        message: "WARNING: Please, type component name to owerwrite",
-      });
-      if (confirm !== componentName) throw msg;
-      await removeDuplicates(await getComponentsDir(), componentName);
-      console.log(chalk.redBright("Existed component removed!"));
-    }
-
+    const { dry, scriptLanguage, cssLanguage, cssExternal, separate } = options;
+    const { sourceDir, libDir, componentsDir, ...config } = await getConfig();
+    const defaultScriptLang = scriptLanguage || config.defaultScriptLang;
     const folderPath = await getComponentPath(
       componentName,
       cssExternal || separate
@@ -59,7 +27,7 @@ export const generateComponent = async (
     const fullPath = normalize(`${folderPath}/${componentName}.svelte`);
     const componentBody = prettier.format(
       await getComponentSchema(componentName, {
-        scriptLanguage: scriptLanguage || defaultScriptLang,
+        scriptLanguage: defaultScriptLang,
         cssExternal,
         cssLanguage,
       }),
@@ -69,7 +37,7 @@ export const generateComponent = async (
     );
 
     if (!dry) {
-      await mkdir(folderPath, { recursive: true });
+      await createDir(folderPath);
       if (cssExternal) {
         const styleFileName = "style.css";
         const cssFilePath = normalize(`${folderPath}/${styleFileName}`);
