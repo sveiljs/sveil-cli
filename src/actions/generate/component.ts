@@ -12,7 +12,7 @@ import { normalize } from "path";
 import { getCssMainRule } from "../../schemas/style";
 const prettier = require("prettier");
 
-export const generateComponent = async (
+export const generateComponentAction = async (
   componentName: string,
   options: any
 ) => {

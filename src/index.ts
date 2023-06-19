@@ -3,7 +3,7 @@ import { Command, Option } from "commander";
 import initCommand from "./actions/init";
 // import { Structure } from "./model";
 import { toLowerCase } from "./utils";
-import { generateComponent } from "./actions/generate/component";
+import { generateComponentAction } from "./actions/generate/component";
 import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
 import { generateInitialStructureAction } from "./actions/generate/structure";
@@ -76,7 +76,7 @@ const main = async () => {
     .option("-s, --separate", "Generate component in separate folder")
     .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
     .hook("preAction", generateComponentHook)
-    .action(generateComponent);
+    .action(generateComponentAction);
 
   generate
     .command("component-state")
