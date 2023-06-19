@@ -6,6 +6,7 @@ import { toLowerCase } from "./utils";
 import { generateComponent } from "./actions/generate/component";
 import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
+import { generateInitialStructureAction } from "./actions/generate/structure";
 
 const main = async () => {
   const app = new Command();
@@ -46,6 +47,11 @@ const main = async () => {
     .command("generate")
     .alias("g")
     .description("Genearate sveil resource");
+
+  generate
+    .command("structure")
+    .alias("s")
+    .action(generateInitialStructureAction);
 
   generate
     .command("component")
