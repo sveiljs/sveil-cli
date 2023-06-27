@@ -1,31 +1,68 @@
 #!/usr/bin/env node
 import chalk from "chalk";
-import { readdir, stat } from "fs/promises";
-import { getComponentsDir } from "../../utils";
+import { mkdir, readdir, rename, stat } from "fs/promises";
+import {
+  generateFile,
+  getComponentPath,
+  getComponentsDir,
+  getFileName,
+  isTsDetected,
+} from "../../utils";
+import { select } from "@inquirer/prompts";
+import { getComponentStateSchema } from "../../schemas/component/component-state";
 import { normalize } from "path";
-// import { mkdir } from "fs/promises";
-// const prettier = require("prettier");
+const prettier = require("prettier");
 
-export const generateComponentState = async (
-  componentName: string
-  // options: any
-) => {
+export const generateComponentState = async (componentName: string) => {
   try {
     const components = await readdir(await getComponentsDir());
-    const existedComponent = components.find(
-      (c) => c.split(".")[0] === componentName
+    let existedComponent;
+
+    if (componentName) {
+      existedComponent = components.find(
+        (c) => getFileName(c) === componentName
+      );
+    } else {
+      if (!components.length) throw "No components existed";
+
+      const choices = components.map((c) => ({
+        name: getFileName(c),
+        value: c,
+      }));
+      existedComponent = await select({
+        message: "Select a component name",
+        choices,
+      });
+    }
+
+    if (!existedComponent) throw `Component ${componentName} does not exists`;
+
+    const existedComponentName = getFileName(existedComponent);
+    const componentsDir = await getComponentsDir();
+    const isTs = await isTsDetected();
+    const componentFileNode = normalize(`${componentsDir}/${existedComponent}`);
+    const componentStat = await stat(componentFileNode);
+    const componentFullPath = await getComponentPath(existedComponent);
+    const newPath = normalize(`${componentsDir}/${existedComponentName}`);
+    const newComponentPath = normalize(
+      `${newPath}/${existedComponentName}.svelte`
+    );
+    const companentStatePath = normalize(
+      `${newPath}/component.state.${isTs ? "ts" : "js"}`
+    );
+    const componentStateSchema = prettier.format(
+      getComponentStateSchema(existedComponentName),
+      {
+        parser: isTs ? "typescript" : "babel",
+      }
     );
 
-    if (!existedComponent) throw `Component ${componentName} is not exists`;
+    if (!componentStat.isDirectory()) {
+      await mkdir(normalize(`${componentsDir}/${existedComponentName}`));
+      await rename(componentFullPath, newComponentPath);
+    }
 
-    const componentState = await stat(
-      normalize(`${await getComponentsDir()}/${existedComponent}`)
-    );
-    console.log("componentState", componentState.isDirectory());
-
-    // const {
-    //   dry,
-    // } = options;
+    await generateFile(companentStatePath, componentStateSchema);
   } catch (error) {
     console.log(chalk.red("Can't generate component state: "));
     console.log(chalk.dim(error));

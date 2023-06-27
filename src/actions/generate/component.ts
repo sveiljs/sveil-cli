@@ -4,7 +4,7 @@ import { getComponentSchema } from "../../schemas/component/component";
 import {
   createDir,
   generateFile,
-  getComponentPath,
+  generateCompotentPath,
   getConfig,
   logGeneratedFile,
 } from "../../utils";
@@ -20,7 +20,7 @@ export const generateComponentAction = async (
     const { dry, scriptLanguage, cssLanguage, cssExternal, separate } = options;
     const { sourceDir, libDir, componentsDir, ...config } = await getConfig();
     const defaultScriptLang = scriptLanguage || config.defaultScriptLang;
-    const folderPath = await getComponentPath(
+    const folderPath = await generateCompotentPath(
       componentName,
       cssExternal || separate
     );

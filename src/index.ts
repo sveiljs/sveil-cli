@@ -81,7 +81,7 @@ const main = async () => {
   generate
     .command("component-state")
     .alias("cs")
-    .argument("<componentName>", "Target component name")
+    .argument("[componentName]", "Target component name")
     .action(generateComponentState);
 
   await app.parseAsync(process.argv);

@@ -1,8 +1,15 @@
 #!/usr/bin/env node
 import chalk from "chalk";
 import { fork } from "child_process";
-import { writeFile } from "fs";
-import { mkdir, readFile, readdir, rm, stat, unlink } from "fs/promises";
+import {
+  mkdir,
+  readFile,
+  readdir,
+  rm,
+  stat,
+  unlink,
+  writeFile,
+} from "fs/promises";
 import { Config, ScriptLangs, Structure } from "./model";
 import { normalize } from "path";
 import { defaultConfig } from "./config";
@@ -57,7 +64,8 @@ export const getActionError = async () => {
 export const generateFile = async (filePath: string, content: any) => {
   const fileContent =
     typeof content === "string" ? content : JSON.stringify(content, null, 2);
-  writeFile(normalize(filePath), fileContent, (err) => {
+
+  await writeFile(normalize(filePath), fileContent).catch((err) => {
     if (err) {
       console.error(chalk.red(`File generate error: ${err}`));
     }
@@ -108,8 +116,8 @@ export const getComponentsDir = async () => {
   return normalize(`${process.cwd()}/${sourceDir}/${libDir}/${componentsDir}`);
 };
 
-export const getComponentPath = async (
-  fileName: string,
+export const generateCompotentPath = async (
+  componentName: string,
   extraFolder = false
 ) => {
   const { structure, sourceDir, libDir, componentsDir, featuresDir } =
@@ -119,11 +127,21 @@ export const getComponentPath = async (
     if (!extraFolder) {
       return await getComponentsDir();
     }
-    return normalize(`${await getComponentsDir()}/${fileName}`);
+    return normalize(`${await getComponentsDir()}/${componentName}`);
   }
   return normalize(
-    `${process.cwd()}/${sourceDir}/${libDir}/${featuresDir}/${fileName}/${componentsDir}`
+    `${process.cwd()}/${sourceDir}/${libDir}/${featuresDir}/${componentName}/${componentsDir}`
   );
+};
+
+export const getComponentPath = async (componentName: string) => {
+  const componentsDir = await getComponentsDir();
+  const componentPath = `${componentsDir}/${componentName}`;
+  const componentState = await stat(componentPath);
+  const fullComponentPath = componentState.isDirectory()
+    ? `${componentPath}/${componentName}.svelte`
+    : componentPath;
+  return normalize(fullComponentPath);
 };
 
 export const isTsDetected = async () => {
@@ -148,7 +166,7 @@ export const removeDuplicates = async (folder: string, name: string) => {
   const nodes = await readdir(normalize(folder));
 
   for (const node of nodes) {
-    const entityName = node.split(".")[0];
+    const entityName = getFileName(node);
     if (entityName === name) {
       const path = normalize(`${folder}/${node}`);
       const pathStats = await stat(path);
@@ -168,3 +186,10 @@ export const toLowerCase = (str: string) => str?.toLocaleLowerCase?.();
 
 export const logGeneratedFile = (fileName: string, fullPath: string) =>
   console.log(chalk.blue(`- file ${fileName} generated in ${fullPath}`.trim()));
+
+export const capitalize = (str: string) =>
+  str[0].toLocaleUpperCase() + str.slice(1);
+
+export const getFileNameExtension = (str: string) => str.split(".");
+
+export const getFileName = (str) => getFileNameExtension(str)[0];

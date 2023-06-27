@@ -1,8 +1,7 @@
-export const getComponentStateSchema = (
-  name: string,
-  expressions: string[]
-) => {
-  const className = name[0].toLocaleUpperCase + name.slice(1);
+import { capitalize } from "../../utils";
+
+export const getComponentStateSchema = (name: string) => {
+  const className = capitalize(name);
   return `
     export default class ${className} {
       constructor() {}
