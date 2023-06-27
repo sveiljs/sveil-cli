@@ -12,10 +12,10 @@ const main = async () => {
   const app = new Command();
 
   app
-    // add option for global config (is it possible?)
+    .name("sveil")
     .command("init")
-    .alias("i")
     .description("Init sveil and create sveil config")
+    .alias("i")
     .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
     .option("-y, --skip", "Skip interactive tour and init with default values")
     // need investigate use cases for feature structure
@@ -45,16 +45,18 @@ const main = async () => {
 
   const generate = app
     .command("generate")
-    .alias("g")
-    .description("Genearate sveil resource");
+    .description("Genearate sveil resource")
+    .alias("g");
 
   generate
     .command("structure")
+    .description("Generate initial folders structure")
     .alias("s")
     .action(generateInitialStructureAction);
 
   generate
     .command("component")
+    .description("Generate svelte component")
     .alias("c")
     .argument("<componentName>", "Component name", toLowerCase)
     .addOption(
@@ -80,6 +82,7 @@ const main = async () => {
 
   generate
     .command("component-state")
+    .description("Generate component state")
     .alias("cs")
     .argument("[componentName]", "Target component name")
     .action(generateComponentState);
