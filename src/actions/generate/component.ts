@@ -5,8 +5,8 @@ import {
   createDir,
   generateFile,
   generateCompotentPath,
-  getConfig,
   logGeneratedFile,
+  getScriptLang,
 } from "../../utils";
 import { normalize } from "path";
 import { getCssMainRule } from "../../schemas/style";
@@ -18,8 +18,6 @@ export const generateComponentAction = async (
 ) => {
   try {
     const { dry, scriptLanguage, cssLanguage, cssExternal, separate } = options;
-    const { sourceDir, libDir, componentsDir, ...config } = await getConfig();
-    const defaultScriptLang = scriptLanguage || config.defaultScriptLang;
     const folderPath = await generateCompotentPath(
       componentName,
       cssExternal || separate
@@ -27,7 +25,7 @@ export const generateComponentAction = async (
     const fullPath = normalize(`${folderPath}/${componentName}.svelte`);
     const componentBody = prettier.format(
       await getComponentSchema(componentName, {
-        scriptLanguage: defaultScriptLang,
+        scriptLanguage: scriptLanguage || (await getScriptLang()),
         cssExternal,
         cssLanguage,
       }),

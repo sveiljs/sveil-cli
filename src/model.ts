@@ -18,12 +18,10 @@ export interface Config {
   sourceDir: string;
   libDir: string;
   componentsDir: string;
-  servicesDir: string;
-  stateDir: string;
-  sharedDir: string;
+  servicesDir?: string;
+  stateDir?: string;
+  sharedDir?: string;
   featuresDir?: string;
-  defaultScriptLang?: ScriptLangs | string;
-  defaultCssLang?: CssLangs | string;
 }
 
 export interface ComponentSchemaOptions {

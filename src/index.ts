@@ -4,9 +4,9 @@ import initCommand from "./actions/init";
 // import { Structure } from "./model";
 import { toLowerCase } from "./utils";
 import { generateComponentAction } from "./actions/generate/component";
-import { generateComponentState } from "./actions/generate/component-state";
+// import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
-import { generateInitialStructureAction } from "./actions/generate/structure";
+// import { generateInitialStructureAction } from "./actions/generate/structure";
 
 const main = async () => {
   const app = new Command();
@@ -32,15 +32,10 @@ const main = async () => {
       "-cd, --components-dir <dir>",
       "Set components directory of project"
     )
-    .option("-srvd, --services-dir <dir>", "Set services directory of project")
-    .option("-std, --state-dir <dir>", "Set state directory of project")
-    .option("-sd, --shared-dir <dir>", "Set shared directory of project")
-    .addOption(
-      new Option(
-        "-sl, --script-language <language>",
-        "Set default script language"
-      ).choices(["ts"])
-    )
+    // redundant for now
+    // .option("-srvd, --services-dir <dir>", "Set services directory of project")
+    // .option("-std, --state-dir <dir>", "Set state directory of project")
+    // .option("-sd, --shared-dir <dir>", "Set shared directory of project")
     .action(initCommand);
 
   const generate = app
@@ -48,17 +43,19 @@ const main = async () => {
     .description("Genearate sveil resource")
     .alias("g");
 
-  generate
-    .command("structure")
-    .description("Generate initial folders structure")
-    .alias("s")
-    .action(generateInitialStructureAction);
+  // redundant for now
+  // generate
+  //   .command("structure")
+  //   .description("Generate initial folders structure")
+  //   .alias("s")
+  //   .action(generateInitialStructureAction);
 
   generate
     .command("component")
     .description("Generate svelte component")
     .alias("c")
     .argument("<componentName>", "Component name", toLowerCase)
+    .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
     .addOption(
       new Option(
         "-sl, --script-language <language>",
@@ -76,16 +73,16 @@ const main = async () => {
     )
     .option("-o, --overwrite", "WARNING: Overwriting existed component")
     .option("-s, --separate", "Generate component in separate folder")
-    .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
     .hook("preAction", generateComponentHook)
     .action(generateComponentAction);
 
-  generate
-    .command("component-state")
-    .description("Generate component state")
-    .alias("cs")
-    .argument("[componentName]", "Target component name")
-    .action(generateComponentState);
+  // in develop
+  // generate
+  //   .command("component-state")
+  //   .description("Generate component state")
+  //   .alias("cs")
+  //   .argument("[componentName]", "Target component name")
+  //   .action(generateComponentState);
 
   await app.parseAsync(process.argv);
 };

@@ -73,14 +73,7 @@ export const generateFile = async (filePath: string, content: any) => {
 };
 
 export const generateInitFolders = async () => {
-  const {
-    structure,
-    libDir,
-    sourceDir,
-    defaultCssLang,
-    defaultScriptLang,
-    ...config
-  } = await getConfig();
+  const { structure, libDir, sourceDir, ...config } = await getConfig();
   if (structure === Structure.DOMAIN) {
     for (const key in config) {
       if (Object.prototype.hasOwnProperty.call(config, key)) {
@@ -103,13 +96,14 @@ export const getConfig = async (): Promise<Config> => {
     });
     return JSON.parse(json) as Config;
   } catch (error) {
-    const defaultScriptLang = (await isTsDetected()) ? ScriptLangs.TS : "";
     return {
       ...defaultConfig,
-      defaultScriptLang,
     } as Config;
   }
 };
+
+export const getScriptLang = async () =>
+  (await isTsDetected()) ? ScriptLangs.TS : "";
 
 export const getComponentsDir = async () => {
   const { sourceDir, libDir, componentsDir } = await getConfig();

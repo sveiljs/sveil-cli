@@ -1,14 +1,9 @@
 #!/usr/bin/env node
-import { input, confirm } from "@inquirer/prompts";
+import { input } from "@inquirer/prompts";
 import chalk from "chalk";
 // import select from "@inquirer/select";
-import { Config, ScriptLangs, Structure } from "../model";
-import {
-  generateFile,
-  generateInitFolders,
-  getActionError,
-  isTsDetected,
-} from "../utils";
+import { Config, Structure } from "../model";
+import { generateFile, generateInitFolders, getActionError } from "../utils";
 import { defaultConfig } from "../config";
 
 export default async function initCommand(this: any) {
@@ -27,7 +22,6 @@ export default async function initCommand(this: any) {
     }));
 
   let err = await getActionError();
-  let scriptLang = options.scriptLanguage || "";
   // let featuresDir = "";
 
   if (err) {
@@ -78,44 +72,29 @@ export default async function initCommand(this: any) {
     "components"
   );
 
-  const servicesDir = await getDirChoice(
-    "servicesDir",
-    defaultConfig.servicesDir,
-    "services"
-  );
+  // const servicesDir = await getDirChoice(
+  //   "servicesDir",
+  //   defaultConfig.servicesDir,
+  //   "services"
+  // );
 
-  const stateDir = await getDirChoice(
-    "stateDir",
-    defaultConfig.stateDir,
-    "state"
-  );
+  // const stateDir = await getDirChoice(
+  //   "stateDir",
+  //   defaultConfig.stateDir,
+  //   "state"
+  // );
 
-  const sharedDir = await getDirChoice(
-    "sharedDir",
-    defaultConfig.sharedDir,
-    "shared"
-  );
-
-  if ((await isTsDetected()) && !options.scriptLanguage && !options.skip) {
-    scriptLang = (await confirm({
-      message:
-        "Typescript config detected. Do you want use ts lang in svelte scripts by default?",
-      default: true,
-    }))
-      ? ScriptLangs.TS
-      : "";
-  }
+  // const sharedDir = await getDirChoice(
+  //   "sharedDir",
+  //   defaultConfig.sharedDir,
+  //   "shared"
+  // );
 
   const config: Config = {
     structure: Structure.DOMAIN,
     sourceDir,
     libDir,
     componentsDir,
-    servicesDir,
-    stateDir,
-    sharedDir,
-    defaultCssLang: "",
-    defaultScriptLang: scriptLang,
     // featuresDir,
   };
 
