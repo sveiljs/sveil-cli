@@ -43,7 +43,7 @@ For now it's limited generation, but with time sveil will get to structure svelt
 ## Instalation
 
     ```
-    npm i sveil -g
+    npm i @sveil/cli -g
     ```
 
 ---
