@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Sveil - svelte generation tool",
   "main": "dist/index.js",
   "engines": {
@@ -12,7 +12,6 @@
   "scripts": {
     "start": "tsc && node dist/index",
     "build": "tsc",
-    "circulate": "rm -rf ./dist && tsc && npm i -g",
     "test": "exit 0"
   },
   "repository": {
