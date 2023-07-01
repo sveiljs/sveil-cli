@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Sveil - svelte generation tool",
   "main": "dist/index.js",
   "engines": {
