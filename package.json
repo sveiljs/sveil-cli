@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "0.0.25",
+  "version": "0.0.26",
   "description": "Sveil - svelte generation tool",
   "engines": {
     "node": ">= 16"
@@ -32,9 +32,13 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "prepublish": "npm version patch --force",
-    "pub": "npm run build && npm run prepublish && npm publish --access=public",
-    "test": "exit 0"
+    "test": "exit 0",
+    "validate": "git checkout master && git pull && npm install && npm test && rm -rf dist/ && npm run build",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch",
+    "version:up": "npm version patch --force",
+    "pub": "npm run validate && npm run version:up && git push origin && git push origin --tags && npm publish --access public"
   },
   "devDependencies": {
     "@types/node": "^20.1.3",
