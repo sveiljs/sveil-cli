@@ -28,13 +28,13 @@ The Sveil on other hand is standalone tool that you can use without any config f
 
 Freedom without structure is chaos. Svelte let us deside how to organize project freely, there're only several restrictions/rules. Since svelte trying to bind to native js way without any built in design patterns, we as developers are on our own.
 
-I see 3 main goals of such tool:
+I see 3 main goals of sveil tool:
 
 - Generation
 - Structure
 - Scale
 
-For now it's limited generation, but with time sveil will get to structure svelte project and scale it (like nest cli or angular).
+For now it's limited generation, but with time sveil will get ability to structure svelte project and scale it (like nest or angular cli).
 
   </details>
 
