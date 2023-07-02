@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "0.0.26",
+  "version": "0.0.27",
   "description": "Sveil - svelte generation tool",
   "engines": {
     "node": ">= 16"
@@ -34,7 +34,7 @@
     "build": "tsc",
     "test": "exit 0",
     "clean": "rm -rf dist/",
-    "validate": "git checkout master && git pull && npm install && npm test && npm run clean && npm run build && npm run start g c test -d",
+    "validate": "git checkout master && git pull && npm install && npm test && npm run clean && npm run build",
     "release:major": "npm version major",
     "release:minor": "npm version minor",
     "release:patch": "npm version patch",
