@@ -62,7 +62,7 @@ In any situation to find desired command.
 
 ## Usage
 
-Here's auto documentation, that you can run it by your own in any time:
+Here's auto documentation, that you can run by your own in any time:
 
 ```
 sveil
