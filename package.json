@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "description": "Sveil - svelte generation tool",
   "engines": {
     "node": ">= 16"
@@ -32,7 +32,7 @@
   "scripts": {
     "start": "node dist/index.js",
     "build": "tsc",
-    "pub": "npm run build && npm version patch --force && git commit -am 'bump up version' && npm publish",
+    "pub": "npm run build && npm version patch --force && git add . && git commit -m \"bump up version\" && npm publish",
     "test": "exit 0"
   },
   "devDependencies": {
