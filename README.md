@@ -26,7 +26,7 @@ The Sveil on other hand is standalone tool that you can use without any config f
 
 **Philosophy:**
 
-Freedom without structure is chaos. Svelte let us deside how to organize project freely, there're only several restrictions/rules. Since svelte trying to bind to native js way without any built in design patterns, we as developers are on our own.
+Freedom without structure is chaos. Svelte let us decide how to organize project freely, there're only several restrictions/rules. Since svelte trying to bind to native js way without any built in design patterns, we as developers are on our own.
 
 I see 3 main goals of sveil tool:
 
@@ -73,7 +73,7 @@ Options:
 
 Commands:
   init|i [options]  Init sveil and create sveil config
-  generate|g        Genearate sveil resource
+  generate|g        Generate sveil resource
   help [command]    display help for command
 ```
 
@@ -96,7 +96,7 @@ Usage: sveil init|i [options]
 Init sveil and create sveil config
 
 Options:
-  -d, --dry                    Run comman dry-run(no changes will be applied)
+  -d, --dry                    Run command dry-run(no changes will be applied)
   -y, --skip                   Skip interactive tour and init with default values
   -srcd, --source-dir <dir>    Set source directory of project
   -ld, --lib-dir <dir>         Set lib directory of project
@@ -122,7 +122,7 @@ Options:
   -sl, --script-language <language>  Set component script language (choices: "ts", "js")
   -ce, --css-external                Put component styles out of component
   -cl, --css-language <language>     Set component style language, e.g. 'scss' (choices: "scss", "postcss")
-  -o, --overwrite                    WARNING: Overwriting existed component
+  -o, --overwrite                    WARNING: Overwriting existing component
   -s, --separate                     Generate component in separate folder
   -h, --help                         display help for command
 ```
