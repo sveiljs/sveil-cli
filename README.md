@@ -83,7 +83,7 @@ Commands:
 
 Command creates _sveil-cli.json_ in root directory.
 
-> You need it only if in your project using non standart named directories.
+> Not required in most cases. You need it only if your project using non standart named directories.
 
 For example common path in svelte for lib is **src/lib/**, but if you have **src/library/**, then you need sveil configuration file (you can create it manually, doesn't matter really). Same for inner lib directories, like "components", "store", etc. Or even **source/** instead of **src/**, all path values are configurable.
 
