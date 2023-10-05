@@ -7,8 +7,12 @@ import { generateComponentAction } from "./actions/generate/component";
 import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
 
+const packageJson = require("../package.json");
+
 const main = async () => {
   const app = new Command();
+
+  app.version(packageJson?.version, "-v, --version", "Show sveil version");
 
   app
     .name("sveil")
