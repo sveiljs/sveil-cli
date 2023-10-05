@@ -4,9 +4,8 @@ import initCommand from "./actions/init";
 // import { Structure } from "./model";
 import { toLowerCase } from "./utils";
 import { generateComponentAction } from "./actions/generate/component";
-// import { generateComponentState } from "./actions/generate/component-state";
+import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
-// import { generateInitialStructureAction } from "./actions/generate/structure";
 
 const main = async () => {
   const app = new Command();
@@ -43,13 +42,6 @@ const main = async () => {
     .description("Generate sveil resource")
     .alias("g");
 
-  // redundant for now
-  // generate
-  //   .command("structure")
-  //   .description("Generate initial folders structure")
-  //   .alias("s")
-  //   .action(generateInitialStructureAction);
-
   generate
     .command("component")
     .description("Generate svelte component")
@@ -76,13 +68,12 @@ const main = async () => {
     .hook("preAction", generateComponentHook)
     .action(generateComponentAction);
 
-  // in develop
-  // generate
-  //   .command("component-state")
-  //   .description("Generate component state")
-  //   .alias("cs")
-  //   .argument("[componentName]", "Target component name")
-  //   .action(generateComponentState);
+  generate
+    .command("component-state")
+    .description("Generate component state")
+    .alias("cs")
+    .argument("[componentName]", "Target component name")
+    .action(generateComponentState);
 
   await app.parseAsync(process.argv);
 };
