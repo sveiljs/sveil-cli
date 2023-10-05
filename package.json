@@ -1,19 +1,20 @@
 {
   "name": "@sveil/cli",
-  "version": "1.0.0",
+  "version": "0.0.29",
   "description": "Sveil - svelte generation tool",
-  "main": "dist/index.js",
   "engines": {
     "node": ">= 16"
   },
+  "author": "Alexei Danilin (Alex Dan)",
+  "license": "MIT",
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "main": "dist/index.js",
   "bin": {
     "sveil": "dist/index.js"
-  },
-  "scripts": {
-    "start": "tsc && node dist/index",
-    "build": "tsc",
-    "circulate": "rm -rf ./dist && tsc && npm i -g",
-    "test": "exit 0"
   },
   "repository": {
     "type": "git",
@@ -28,16 +29,20 @@
     "svelte",
     "sveil"
   ],
-  "author": "Alexei Danilin (Alex Dan)",
-  "license": "MIT",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "test": "exit 0",
+    "clean": "rm -rf dist/",
+    "validate": "git checkout master && git pull && npm install && npm test && npm run clean && npm run build",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch",
+    "version:up": "npm version patch --force",
+    "pub": "npm run validate && npm run version:up && git push origin && git push origin --tags && npm publish --access public"
+  },
   "devDependencies": {
-    "@babel/parser": "^7.22.5",
     "@types/node": "^20.1.3",
-    "@typescript-eslint/eslint-plugin": "^5.60.1",
-    "@typescript-eslint/parser": "^5.60.1",
-    "eslint": "^8.43.0",
-    "prettier": "2.8.8",
-    "prettier-plugin-svelte": "^2.10.0",
     "typescript": "^5.1.3"
   },
   "dependencies": {
@@ -46,6 +51,12 @@
     "@inquirer/select": "^1.1.3",
     "chalk": "4.1.2",
     "commander": "^10.0.1",
-    "figlet": "^1.6.0"
+    "figlet": "^1.6.0",
+    "@babel/parser": "^7.22.5",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "@typescript-eslint/parser": "^5.60.1",
+    "eslint": "^8.43.0",
+    "prettier": "^2.8.8",
+    "prettier-plugin-svelte": "^2.10.0"
   }
 }

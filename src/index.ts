@@ -15,7 +15,7 @@ const main = async () => {
     .command("init")
     .description("Init sveil and create sveil config")
     .alias("i")
-    .option("-d, --dry", "Run comman dry-run(no changes will be applied)")
+    .option("-d, --dry", "Run command dry-run(no changes will be applied)")
     .option("-y, --skip", "Skip interactive tour and init with default values")
     // need investigate use cases for feature structure
     // .addOption(
@@ -39,7 +39,7 @@ const main = async () => {
 
   const generate = app
     .command("generate")
-    .description("Genearate sveil resource")
+    .description("Generate sveil resource")
     .alias("g");
 
   generate
@@ -47,7 +47,7 @@ const main = async () => {
     .description("Generate svelte component")
     .alias("c")
     .argument("<componentName>", "Component name", toLowerCase)
-    .option("-d, --dry", "Run comman dry-run (no changes will be applied)")
+    .option("-d, --dry", "Run command dry-run (no changes will be applied)")
     .addOption(
       new Option(
         "-sl, --script-language <language>",
@@ -63,7 +63,7 @@ const main = async () => {
         .choices(["scss", "postcss"])
         .conflicts(["cssExternal"])
     )
-    .option("-o, --overwrite", "WARNING: Overwriting existed component")
+    .option("-o, --overwrite", "WARNING: Overwriting existing component")
     .option("-s, --separate", "Generate component in separate folder")
     .hook("preAction", generateComponentHook)
     .action(generateComponentAction);
