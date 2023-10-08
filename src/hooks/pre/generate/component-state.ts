@@ -9,8 +9,8 @@ export const generateComponentStateHook = async () => {
     });
     const json = JSON.parse(content);
     if (
-      !json.dependencies["@sveil/core"] &&
-      !json.devDependencies["@sveil/core"]
+      !json.dependencies?.["@sveil/core"] &&
+      !json.devDependencies?.["@sveil/core"]
     ) {
       throw "@sveil/core is required for this command. Please run: 'npm install @sveil/core' and try again.";
     }
