@@ -1,6 +1,6 @@
 # sveil-cli
 
-> Note: for now sveil have very limited features and can only generate svelte components, but there're big plans.
+> ⚠️Alpha version. Still under development!
 
 > Required node >= 16
 
