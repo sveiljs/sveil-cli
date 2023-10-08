@@ -6,6 +6,7 @@ import { toLowerCase } from "./utils";
 import { generateComponentAction } from "./actions/generate/component";
 import { generateComponentState } from "./actions/generate/component-state";
 import { generateComponentHook } from "./hooks/pre/generate/component";
+import { generateComponentStateHook } from "./hooks/pre/generate/component-state";
 
 const packageJson = require("../package.json");
 
@@ -77,6 +78,7 @@ const main = async () => {
     .description("Generate component state")
     .alias("cs")
     .argument("[componentName]", "Target component name")
+    .hook("preAction", generateComponentStateHook)
     .action(generateComponentState);
 
   await app.parseAsync(process.argv);
