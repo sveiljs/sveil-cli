@@ -78,6 +78,7 @@ export const generateComponentState = async (
     const schema = getComponentStateSchema(
       existedComponentName,
       selectedState,
+      fileName,
       isTs
     );
     const componentStateSchema = prettier.format(schema, {

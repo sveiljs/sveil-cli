@@ -50,9 +50,10 @@ const getTypes = (className: string, stores: StoreRef[], isTs = false) => {
 export const getComponentStateSchema = (
   name: string,
   stores: StoreRef[],
+  fileName: string,
   isTs = false
 ) => {
-  const className = `${capitalize(name)}State`;
+  const className = `${capitalize(fileName || name)}State`;
   const comments = getComments(isTs);
   const imports = getImports(isTs, stores);
   const types = getTypes(className, stores, isTs);
