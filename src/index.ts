@@ -78,6 +78,8 @@ const main = async () => {
     .description("Generate component state")
     .alias("cs")
     .argument("[componentName]", "Target component name")
+    .option("-s, --state", "add target stores")
+    .option("-n, --file-name [name]", "Custom file name")
     .hook("preAction", generateComponentStateHook)
     .action(generateComponentState);
 

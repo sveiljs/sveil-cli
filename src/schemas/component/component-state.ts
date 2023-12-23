@@ -1,18 +1,72 @@
+import { StoreRef } from "../../model";
 import { capitalize } from "../../utils";
 
-export const getComponentStateSchema = (name: string) => {
-  const className = `${capitalize(name)}State`;
+const getComments = (isTs = false) => {
+  if (isTs) {
+    return `
+      /* eslint-disable @typescript-eslint/no-empty-interface */
+    `;
+  }
+  return "";
+};
+
+const getImports = (isTs = false, stores: StoreRef[]) => {
+  const storeImports = stores?.reduce(
+    (prev, cur) =>
+      cur.genTypePath
+        ? prev + `import type { ${cur.storeType} } from '${cur.genTypePath}';`
+        : prev,
+    ""
+  );
+
+  if (isTs) {
+    return `
+      import { type SubscribitionsBase, Subscribitions, type SvelteStore, type SvelteComponentState } from '@sveil/core';
+      ${storeImports}
+    `;
+  }
   return `
-    /* eslint-disable @typescript-eslint/no-empty-interface */
-    import { type SubscribitionsBase, Subscribitions } from '@sveil/core';
-    import type { State } from './model';
+    import { Subscribitions } from '@sveil/core';
+  `;
+};
 
-    export interface ${className} extends SubscribitionsBase<State> {}
+const getTypes = (className: string, stores: StoreRef[], isTs = false) => {
+  if (isTs) {
+    return `
+      interface State extends SvelteComponentState {
+        ${
+          stores.length
+            ? stores.map((s) => `${s.storeName}: SvelteStore<${s.storeType}>`)
+            : "storeName: SvelteStore<any>"
+        }
+      }
+      
+      export interface ${className} extends SubscribitionsBase<State> {}
+    `;
+  }
+  return "";
+};
 
-    export class ${className} extends Subscribitions {
+export const getComponentStateSchema = (
+  name: string,
+  stores: StoreRef[],
+  isTs = false
+) => {
+  const className = `${capitalize(name)}State`;
+  const comments = getComments(isTs);
+  const imports = getImports(isTs, stores);
+  const types = getTypes(className, stores, isTs);
+  const body = `
+      export class ${className} extends Subscribitions {
       constructor(state: State) {
         super(state);
       }
     }
+  `;
+  return `
+    ${comments}
+    ${imports}
+    ${types}
+    ${body}
   `.trim();
 };

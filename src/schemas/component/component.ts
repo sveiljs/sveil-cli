@@ -1,7 +1,7 @@
 import { ComponentSchemaOptions } from "../../model";
 import { getCssimport, getCssTemplate } from "../style";
 
-export const getComponentSchema = async (
+export const getComponentSchema = (
   fileName: string,
   { scriptLanguage, cssLanguage, cssExternal }: ComponentSchemaOptions = {}
 ) => {

@@ -10,9 +10,10 @@ import {
   unlink,
   writeFile,
 } from "fs/promises";
-import { Config, ScriptLangs, Structure } from "./model";
+import { Config, ScriptLangs, StoreRef, Structure } from "./model";
 import { normalize } from "path";
 import { defaultConfig } from "./config";
+import { Project } from "ts-morph";
 
 export const runScript = async (
   scriptPath: string,
@@ -187,3 +188,60 @@ export const capitalize = (str: string) =>
 export const getFileNameExtension = (str: string) => str.split(".");
 
 export const getFileName = (str) => getFileNameExtension(str)[0];
+
+export const getStateDir = async () => {
+  const { sourceDir, libDir, stateDir } = await getConfig();
+  return normalize(`${process.cwd()}/${sourceDir}/${libDir}/${stateDir}`);
+};
+
+export const getStores = async () => {
+  try {
+    const stateDir = await getStateDir();
+
+    const project = new Project();
+
+    project.addSourceFilesAtPaths([`${stateDir}/*.ts`]);
+
+    return project
+      .getSourceFiles()
+      .map((file) =>
+        Array.from(file.getExportedDeclarations().entries())
+          .filter(([key, [val]]) => {
+            const type = val.getType().getText();
+            return (
+              type.includes('import("svelte/store").Writable') ||
+              type.includes('import("svelte/store").Readable')
+            );
+          })
+          .map(([key, [val]]) => {
+            const genType = val.getType().getTypeArguments()?.[0];
+
+            const baseType = genType.getText();
+
+            const hasImport = !!baseType.match(/import\(/g)?.length;
+
+            const type = hasImport
+              ? genType?.getSymbolOrThrow()?.getName()
+              : baseType;
+
+            let genTypePath = hasImport
+              ? genType
+                  ?.getSymbol()
+                  ?.getDeclarations()
+                  ?.map((d) => d.getSourceFile().getFilePath() as string)
+                  ?.at(0) || ""
+              : "";
+
+            genTypePath = genTypePath.match(/lib.+/g)?.at(0) as string;
+
+            genTypePath = genTypePath ? `$${genTypePath}` : "";
+
+            return new StoreRef(key, type, file.getBaseName(), genTypePath);
+          })
+          .flat()
+      )
+      .flat();
+  } catch (err) {
+    console.error(chalk.red(`Cannot get stores: ${err}`));
+  }
+};

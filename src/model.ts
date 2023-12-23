@@ -29,3 +29,12 @@ export interface ComponentSchemaOptions {
   cssLanguage?: CssLangs | string;
   cssExternal?: boolean;
 }
+
+export class StoreRef {
+  constructor(
+    public storeName: string,
+    public storeType: string,
+    public file: string,
+    public genTypePath?: string
+  ) {}
+}

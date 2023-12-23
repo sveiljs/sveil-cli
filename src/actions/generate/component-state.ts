@@ -6,17 +6,24 @@ import {
   getComponentPath,
   getComponentsDir,
   getFileName,
+  getStores,
   isTsDetected,
 } from "../../utils";
-import { select } from "@inquirer/prompts";
+import { checkbox, select } from "@inquirer/prompts";
 import { getComponentStateSchema } from "../../schemas/component/component-state";
 import { normalize } from "path";
+import { StoreRef } from "../../model";
 const prettier = require("prettier");
 
-export const generateComponentState = async (componentName: string) => {
+export const generateComponentState = async (
+  componentName: string,
+  options: any
+) => {
   try {
+    const { state, fileName } = options;
     const components = await readdir(await getComponentsDir());
     let existedComponent;
+    let selectedState = [] as StoreRef[];
 
     if (componentName) {
       existedComponent = components.find(
@@ -25,7 +32,7 @@ export const generateComponentState = async (componentName: string) => {
     } else {
       if (!components.length) throw "No components existed";
 
-      const choices = components.map((c) => ({
+      const choices = components?.map((c) => ({
         name: getFileName(c),
         value: c,
       }));
@@ -48,14 +55,34 @@ export const generateComponentState = async (componentName: string) => {
       `${newPath}/${existedComponentName}.svelte`
     );
     const companentStatePath = normalize(
-      `${newPath}/component.state.${isTs ? "ts" : "js"}`
+      `${newPath}/${fileName || existedComponent}.state.${isTs ? "ts" : "js"}`
     );
-    const componentStateSchema = prettier.format(
-      getComponentStateSchema(existedComponentName),
-      {
-        parser: isTs ? "typescript" : "babel",
-      }
+
+    if (state) {
+      const stores = await getStores();
+      const choices =
+        stores?.map((store) => {
+          const { storeName, storeType, file } = store;
+          const val = `${storeName}<${storeType}> (${file})`;
+          return {
+            name: val,
+            value: store,
+          };
+        }) || [];
+      selectedState = await checkbox({
+        message: "Select stores",
+        choices,
+      });
+    }
+
+    const schema = getComponentStateSchema(
+      existedComponentName,
+      selectedState,
+      isTs
     );
+    const componentStateSchema = prettier.format(schema, {
+      parser: isTs ? "typescript" : "babel",
+    });
 
     if (!componentStat.isDirectory()) {
       await mkdir(normalize(`${componentsDir}/${existedComponentName}`));
