@@ -40,6 +40,21 @@ For now it's limited generation, but with time sveil will get ability to structu
 
 ---
 
+# Table of Content
+
+- [sveil-cli](#sveil-cli)
+- [Table of Content](#table-of-content)
+  - [Instalation](#instalation)
+  - [Getting started](#getting-started)
+  - [Usage](#usage)
+    - [Init](#init)
+    - [Generate](#generate)
+      - [Component](#component)
+      - [Component state](#component-state)
+      - [Examples](#examples)
+
+---
+
 ## Instalation
 
     ```
@@ -62,13 +77,14 @@ In any situation to find desired command.
 
 ## Usage
 
-Here's auto documentation, that you can run by your own in any time:
+Here's documentation, that you can run in any time:
 
 ```
 sveil
 Usage: sveil [options] [command]
 
 Options:
+  -v, --version     Show sveil version
   -h, --help        display help for command
 
 Commands:
@@ -108,6 +124,8 @@ Options:
 
 ### Generate
 
+#### Component
+
 ```
 sveil g c --help
 Usage: sveil generate component|c [options] <componentName>
@@ -127,29 +145,58 @@ Options:
   -h, --help                         display help for command
 ```
 
-#### Examples:
+#### Component state
 
-Basic usage
+> _Typescript only for now_
 
 ```
+sveil g cs --help
+Usage: sveil generate component-state|cs [options] [componentName]
+
+Generate component state
+
+Arguments:
+  componentName           Target component name
+
+Options:
+  -d, --dry               Run command dry-run (no changes will be applied)
+  -s, --state             add target stores
+  -n, --file-name [name]  Custom file name
+  -h, --help              display help for command
+
+```
+
+#### Examples
+
+  <details>
+    <summary>Generate Component</summary>
+
+```
+
 sveil g c main
+
 ```
 
 OR
 
 ```
+
 sveil generate component main
+
 ```
 
 Output:
 
 ```
+
 - file main.svelte generated in ...\src\lib\components\main.svelte
+
 ```
 
 Basic svelte component template:
 
 ```
+
 <script>
   let name = "main";
 </script>
@@ -177,17 +224,54 @@ It's possible to overwrite default script/style languages with -sl and -cl optio
 You can move styles out of component with -ce option
 
 ```
+
 sveil g c example -ce
+
 ```
 
 Or create component in separate folder with -s option
 
 ```
+
 sveil g c example -s
+
 ```
 
 If component already existed, then you can use -o option with little confirmation prompt (need to write component name)
 
 ```
+
 sveil g c example -o
+
 ```
+
+</details>
+
+  <details>
+    <summary>Generate Component State</summary>
+
+**[More info about output file](https://github.com/sveiljs/sveil?tab=readme-ov-file#basic-example)**
+
+```
+
+sveil g cs main
+
+```
+
+OR
+
+```
+
+sveil generate component-state main
+
+```
+
+Output:
+
+```
+
+- file main.ts generated in ...\src\lib\components\main\main.ts
+
+```
+
+</details>
