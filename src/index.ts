@@ -78,6 +78,7 @@ const main = async () => {
     .description("Generate component state")
     .alias("cs")
     .argument("[componentName]", "Target component name")
+    .option("-d, --dry", "Run command dry-run (no changes will be applied)")
     .option("-s, --state", "add target stores")
     .option("-n, --file-name [name]", "Custom file name")
     .hook("preAction", generateComponentStateHook)

@@ -8,6 +8,7 @@ import {
   getFileName,
   getStores,
   isTsDetected,
+  logGeneratedFile,
 } from "../../utils";
 import { checkbox, select } from "@inquirer/prompts";
 import { getComponentStateSchema } from "../../schemas/component/component-state";
@@ -20,7 +21,7 @@ export const generateComponentState = async (
   options: any
 ) => {
   try {
-    const { state, fileName } = options;
+    const { dry, state, fileName } = options;
     const components = await readdir(await getComponentsDir());
     let existedComponent;
     let selectedState = [] as StoreRef[];
@@ -55,7 +56,9 @@ export const generateComponentState = async (
       `${newPath}/${existedComponentName}.svelte`
     );
     const companentStatePath = normalize(
-      `${newPath}/${fileName || existedComponent}.state.${isTs ? "ts" : "js"}`
+      `${newPath}/${fileName || existedComponentName}.state.${
+        isTs ? "ts" : "js"
+      }`
     );
 
     if (state) {
@@ -85,12 +88,19 @@ export const generateComponentState = async (
       parser: isTs ? "typescript" : "babel",
     });
 
-    if (!componentStat.isDirectory()) {
-      await mkdir(normalize(`${componentsDir}/${existedComponentName}`));
-      await rename(componentFullPath, newComponentPath);
+    if (!dry) {
+      if (!componentStat.isDirectory()) {
+        await mkdir(normalize(`${componentsDir}/${existedComponentName}`));
+        await rename(componentFullPath, newComponentPath);
+      }
+
+      await generateFile(companentStatePath, componentStateSchema);
     }
 
-    await generateFile(companentStatePath, componentStateSchema);
+    logGeneratedFile(
+      `${fileName || existedComponentName}.ts`,
+      companentStatePath
+    );
   } catch (error) {
     console.log(chalk.red("Can't generate component state: "));
     console.log(chalk.dim(error));
