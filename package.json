@@ -1,6 +1,6 @@
 {
   "name": "@sveil/cli",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Sveil - svelte generation tool",
   "engines": {
     "node": ">= 16"
