@@ -171,6 +171,7 @@ Options:
   <details>
     <summary>Generate Component</summary>
 
+   ![sveil generate component](https://github.com/sveiljs/sveil-cli/assets/17780142/d86f4f1a-f6cd-46c0-9d95-a2ed991a8a35=250x250)
 ```
 
 sveil g c main
